@@ -1,13 +1,17 @@
-public enum MapTile
+public enum MapTileType
 {
-    Darkness,
-    EmptyVisible,
-    Roots,
+    Empty,
     WaterSource,
-    WaterSourceWithRoots,
     MetalSource,
-    MetalSourceWithRoots,
     EnergySource,
-    EnergySourceWithRoots,
-    Toxin,
+    Toxin
+}
+public struct MapTile
+{
+    public MapTileType type;
+    public bool IsVisible;
+    public bool HasRoots;
+
+    public int capacityResources;
+    public int currentResources;
 }

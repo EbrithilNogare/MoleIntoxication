@@ -31,7 +31,7 @@ public class GameEngine
     public int locatorMushWaterPrice = 0;
     private bool IsLocatorMushBought = false;
     private bool IsLocatorMushEnergized = false;
-    int visibilityStrength = 3; // 1, 2, 3
+    private int visibilityStrength = 1; // 1, 2, 3
 
     // Mole mushroom
     public int moleMushMetalPrice = 0;

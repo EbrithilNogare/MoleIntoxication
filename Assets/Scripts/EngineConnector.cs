@@ -27,15 +27,17 @@ public class EngineConnector : MonoBehaviour
 
     Tile MapTileToTile(MapTile mapTile)
     {
-        switch (mapTile)
+        if(!mapTile.IsVisible)
         {
-            case MapTile.Darkness: return tiles[0];
-            case MapTile.EmptyVisible: return null;
-            case MapTile.Roots: return tiles[2];
-            case MapTile.WaterSource: return tiles[3];
-            case MapTile.MetalSource: return tiles[4];
-            case MapTile.EnergySource: return tiles[5];
-            case MapTile.Toxin: return tiles[6];
+            return tiles[0];
+        }
+        switch (mapTile.type)
+        {
+            case MapTileType.Empty: return null;
+            case MapTileType.WaterSource: return tiles[3];
+            case MapTileType.MetalSource: return tiles[4];
+            case MapTileType.EnergySource: return tiles[5];
+            case MapTileType.Toxin: return tiles[6];
         }
         return tiles[0];
     }

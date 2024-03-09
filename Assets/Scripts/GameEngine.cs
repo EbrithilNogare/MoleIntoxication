@@ -119,6 +119,8 @@ public class GameEngine
         if (!map[y][x].HasRoots)
             throw new System.Exception("no roots");
 
+        map[y][x].HasRoots = false;
+
 
     }
     public void ClickOn_SolarMushOnOff()

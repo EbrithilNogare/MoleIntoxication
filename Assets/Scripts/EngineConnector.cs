@@ -23,7 +23,12 @@ public class EngineConnector : MonoBehaviour
 
     void Update()
     {
-        for (int y = 0; y < 100; y++)
+        float cameraHeight = Camera.main.orthographicSize;
+        int minY = (int)(-Camera.main.transform.position.y - cameraHeight) - 3;
+        int maxY = (int)(-Camera.main.transform.position.y + cameraHeight) + 3;
+
+
+        for (int y = System.Math.Max(0, minY); y < System.Math.Min(100, maxY); y++)
         {
             for (int x = 0; x < Constants.MAP_WIDTH; x++)
             {
@@ -81,6 +86,7 @@ public class EngineConnector : MonoBehaviour
 
         // Debug.Log("click: " + x + " " + y);
 
+        // TODO remove roots removing method
         if (!engine.map[y][x].HasRoots)
             engine.ClickOn_Map(x, y);
         else

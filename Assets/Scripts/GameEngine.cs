@@ -44,8 +44,8 @@ public class GameEngine
 
     public GameEngine(int startWater, int startMetal)
     {
-        this.availableMetal = startWater;
-        this.availableWater = startMetal;
+        this.availableMetal = startMetal;
+        this.availableWater = startWater;
         this.directions = new List<int[]> { new int[] { 1, 0 }, new int[] { -1, 0 }, new int[] { 0, 1 }, new int[] { 0, -1 } };
         GenerateMap();
     }

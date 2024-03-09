@@ -14,7 +14,8 @@ public class TileSelectorRunner : MonoBehaviour
 
         int x = (int)System.Math.Round(worldMousePosition.x) + (int)(Constants.MAP_WIDTH / 2);
         int y = (int)System.Math.Round(worldMousePosition.y + .5);
-        Debug.Log("click: " + x + " " + y);
+
+        // Debug.Log("hover: " + x + " " + y);
 
         if (y > 0 || x < 0 || x >= Constants.MAP_WIDTH)
             selector.transform.localPosition = new Vector3(-1, 0, 0);

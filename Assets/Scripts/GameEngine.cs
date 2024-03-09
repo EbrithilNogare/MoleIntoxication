@@ -112,15 +112,14 @@ public class GameEngine
             {
                 map[y][x].type = MapTileType.Toxin;
             }
-            else
-            {
-                // Can not place the bomb out of the roots!!!
-            }
         }
-        else
-        {
-            // Is not enough resources!!!
-        }
+    }
+    public void RemoveRoots(int x, int y)
+    {
+        if (!map[y][x].HasRoots)
+            throw new System.Exception("no roots");
+
+
     }
     public void ClickOn_SolarMushOnOff()
     {
@@ -135,10 +134,6 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsSolarMushEnergized = !IsSolarMushEnergized;
-            }
-            else
-            {
-                // Not enough energy!!!
             }
         }
     }
@@ -156,10 +151,6 @@ public class GameEngine
             {
                 IsWaterMushEnergized = !IsWaterMushEnergized;
             }
-            else
-            {
-                // Not enough energy!!!
-            }
         }
     }
     public void ClickOn_LocatorMushOnOff()
@@ -175,10 +166,6 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsLocatorMushEnergized = !IsLocatorMushEnergized;
-            }
-            else
-            {
-                // Not enough energy!!!
             }
         }
     }
@@ -196,10 +183,6 @@ public class GameEngine
             {
                 IsMoleMushEnergized = !IsMoleMushEnergized;
             }
-            else
-            {
-                // Not enough energy!!!
-            }
         }
     }
     public void ClickOn_SolarMushroom()
@@ -208,20 +191,12 @@ public class GameEngine
         {
             IsSolarMushBought = true;
         }
-        else
-        {
-            // Is not enough resources!!!
-        }
     }
     public void ClickOn_WaterMushroom()
     {
         if (availableWater >= waterMushWaterPrice && availableMetal >= waterMushMetalPrice)
         {
             IsWaterMushBought = true;
-        }
-        else
-        {
-            // Is not enough resources!!!
         }
     }
     public void ClickOn_LocatorMushroom()
@@ -230,20 +205,12 @@ public class GameEngine
         {
             IsLocatorMushBought = true;
         }
-        else
-        {
-            // Is not enough resources!!!
-        }
     }
     public void ClickOn_MoleMushroom()
     {
         if (availableWater >= moleMushWaterPrice && availableMetal >= moleMushMetalPrice)
         {
             IsMoleMushBought = true;
-        }
-        else
-        {
-            // Is not enough resources!!!
         }
     }
     public void UpdateResources()
@@ -297,4 +264,3 @@ public class GameEngine
 
     }
 }
-

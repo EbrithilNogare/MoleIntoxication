@@ -44,6 +44,11 @@ public class EngineConnector : MonoBehaviour
 
                 tilemapRoots.SetTile(new Vector3Int(x, -y, 0), rootTile);
                 tilemapResources.SetTile(new Vector3Int(x, -y, 0), resourceTile);
+
+                if (rootTile == tileDarkness)
+                {
+                    tilemapRoots.SetAnimationFrame(new Vector3Int(x, -y, 0), tilemapRoots.GetAnimationFrame(new Vector3Int(-1, -y, 0)));
+                }
             }
         }
     }
@@ -74,7 +79,7 @@ public class EngineConnector : MonoBehaviour
         if (y < 0 || x < 0 || x >= Constants.MAP_WIDTH)
             return;
 
-        Debug.Log("click: " + x + " " + y);
+        // Debug.Log("click: " + x + " " + y);
 
         engine.ClickOn_Map(x, y);
     }
@@ -84,7 +89,7 @@ public class EngineConnector : MonoBehaviour
 
         newY = System.Math.Clamp(newY, -80, 0); // todo better than 80
 
-        Debug.Log("scroll: " + newY);
+        // Debug.Log("scroll: " + newY);
 
         Camera.main.transform.position = new Vector3(
            Camera.main.transform.position.x,
@@ -92,5 +97,4 @@ public class EngineConnector : MonoBehaviour
            Camera.main.transform.position.z
        );
     }
-
 }

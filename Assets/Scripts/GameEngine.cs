@@ -357,7 +357,7 @@ public class GameEngine
         for (int x = centerX - 3; x <= centerX + 3; x++)
             for (int y = centerY - 3; y <= centerY + 3; y++)
             {
-                Debug.Log("here");
+                //Debug.Log("here");
                 if (x >= 0 && y >= 0 && x < map[0].Length && y < map.Count && Mathf.Abs(centerX - x) + Mathf.Abs(centerY - y) <= visibilityStrength)
                     map[y][x].IsVisible = true;
             }

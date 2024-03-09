@@ -98,13 +98,13 @@ public class Mole
 
         Debug.Log("Bomba: " + IsBombed + "....." + "Root: " + findRoots);
 
-
         Vector3 endAttackPosition = new Vector3(important_index - 7, attackingStartPosition.y);
+        Debug.Log("GO: " + endAttackPosition.x + "....." + "Y: " + endAttackPosition.y);
 
         moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
         {
             //MOVE TO ROOTS
-            Debug.Log("Bomba: " + IsBombed + "....." + "Root: " + findRoots);
+            //Debug.Log("Bomba: " + IsBombed + "....." + "Root: " + findRoots);
             if (IsBombed)
             {
                 IsBombed = false;
@@ -136,20 +136,21 @@ public class Mole
     {
         Debug.Log("tu");
         int numOfToBeEatenRoots = UnityEngine.Random.Range(1, MaxNumbreOfRootsToBeEaten);
-        lastEatenRoot = (-(int)attackingStartPosition.y, xPos);
+        lastEatenRoot = (xPos, -(int)attackingStartPosition.y);
         gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
+        Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
         for (int i = 0; i < numOfToBeEatenRoots; i++)
         {
             GenerteEatenRoot(lastEatenRoot);
-            if (gameEnginInstance.map[lastEatenRoot.Item1][lastEatenRoot.Item2].type != MapTileType.Toxin)
+            if (gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type != MapTileType.Toxin)
             {
                 Vector3 endAttackPosition = new Vector3(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2);
                 moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
                 {
                     gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
+                    Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
 
                 });
-                Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
             }
             else
             {
@@ -164,6 +165,7 @@ public class Mole
     private void GenerteEatenRoot((int, int) positionStart)
     {
         List<(int, int)> rootsPosition = new List<(int, int)>();
+
         if (gameEnginInstance.map[0].Length <= positionStart.Item2 - 1
             && gameEnginInstance.map[positionStart.Item1][positionStart.Item2 - 1].HasRoots)
         {
@@ -188,7 +190,7 @@ public class Mole
         int way = UnityEngine.Random.Range(0, rootsPosition.Count);
 
         lastEatenRoot = rootsPosition[way];
-        attackingStartPosition = new Vector2(lastEatenRoot.Item1, lastEatenRoot.Item2);
+        attackingStartPosition = new Vector2(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2);
     }
 
     private void MoveToAttackPosition()

@@ -60,6 +60,12 @@ public class EngineConnector : MonoBehaviour
         }
     }
 
+    [MyBox.ButtonMethod]
+    public void TestMole()
+    {
+        Mole m = new Mole(4, engine, moleGO.transform);
+    }
+
     public void Click(InputAction.CallbackContext context)
     {
         if (!context.started) return;

@@ -6,7 +6,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-public class Mole : MonoBehaviour
+public class Mole
 {
     #region Values
 
@@ -30,6 +30,7 @@ public class Mole : MonoBehaviour
     public int PlayerEndViewValue = 8;
     public int RaiusOfAttack = 5;
     public bool IsBombed = false;
+    public bool IsToxicated = false;
 
     public int MaxNumbreOfRootsToBeEaten = 3;
 
@@ -37,24 +38,28 @@ public class Mole : MonoBehaviour
 
     public float SizeOfTile = -0.5f;
 
-    [SerializeField]
-    private bool findRoots = false;
+    private bool findRoots;
 
     [SerializeField]
-    private Vector2 attackingStartPosition;
+    private Vector2 attackingStartPosition = new Vector2();
 
     private GameEngine gameEnginInstance;
+    private Transform moleTransform;
 
     private (int, int) lastEatenRoot;
 
     #endregion
 
-    public Mole(int generatedAttackHeight, GameEngine engineInstance)
+    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO)
     {
         //GenerateAttack(generatedAttackHeight);
         PlayerEndViewValue = generatedAttackHeight;
+        moleTransform = moleGO;
         MoveToAttackPosition();
         gameEnginInstance = engineInstance;
+        findRoots = false;
+        IsBombed = false;
+        IsToxicated = false;
         IsAttacking = true;
 
     }
@@ -68,6 +73,7 @@ public class Mole : MonoBehaviour
     public void Attack()
     {
         int tmp_index = 0;
+        int important_index = -1;
         foreach (var item in gameEnginInstance.map[PlayerEndViewValue])
         {
             if (item.HasRoots)
@@ -75,23 +81,30 @@ public class Mole : MonoBehaviour
                 if (item.type == MapTileType.Toxin)
                 {
                     IsBombed = true;
-                    return;
+                    if (important_index == -1)
+                        important_index = tmp_index;
+                    break;
                 }
                 else
                 {
                     findRoots = true;
-                    return;
+                    if (important_index == -1)
+                        important_index = tmp_index;
+                    break;
                 }
             }
             tmp_index++;
         }
 
+        Debug.Log("Bomba: " + IsBombed + "....." + "Root: " + findRoots);
 
-        Vector3 endAttackPosition = new Vector3(tmp_index, attackingStartPosition.y);
 
-        transform.DOMove(endAttackPosition, 1f).OnComplete(() =>
+        Vector3 endAttackPosition = new Vector3(important_index - 7, attackingStartPosition.y);
+
+        moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
         {
             //MOVE TO ROOTS
+            Debug.Log("Bomba: " + IsBombed + "....." + "Root: " + findRoots);
             if (IsBombed)
             {
                 IsBombed = false;
@@ -107,7 +120,7 @@ public class Mole : MonoBehaviour
             }
             else if (findRoots)
             {
-                EatRoots(tmp_index);
+                EatRoots(important_index);
             }
             else
             {
@@ -121,13 +134,29 @@ public class Mole : MonoBehaviour
 
     private void EatRoots(int xPos)
     {
-        int numOfToBeEatenRoots = UnityEngine.Random.Range(0, MaxNumbreOfRootsToBeEaten);
-        lastEatenRoot = (xPos, (int)attackingStartPosition.y);
+        Debug.Log("tu");
+        int numOfToBeEatenRoots = UnityEngine.Random.Range(1, MaxNumbreOfRootsToBeEaten);
+        lastEatenRoot = (-(int)attackingStartPosition.y, xPos);
         gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
         for (int i = 0; i < numOfToBeEatenRoots; i++)
         {
             GenerteEatenRoot(lastEatenRoot);
-            gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
+            if (gameEnginInstance.map[lastEatenRoot.Item1][lastEatenRoot.Item2].type != MapTileType.Toxin)
+            {
+                Vector3 endAttackPosition = new Vector3(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2);
+                moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
+                {
+                    gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
+
+                });
+                Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
+            }
+            else
+            {
+                RunAway();
+                return;
+            }
+
 
         }
     }
@@ -159,22 +188,22 @@ public class Mole : MonoBehaviour
         int way = UnityEngine.Random.Range(0, rootsPosition.Count);
 
         lastEatenRoot = rootsPosition[way];
+        attackingStartPosition = new Vector2(lastEatenRoot.Item1, lastEatenRoot.Item2);
     }
 
     private void MoveToAttackPosition()
     {
-
         //HARDCODED X POSITION
-        this.transform.position = new Vector3(-15f, -PlayerEndViewValue, 4f);
-        attackingStartPosition = this.transform.position;
+        moleTransform.position = new Vector3(-15f, -PlayerEndViewValue, 4f);
+        attackingStartPosition = moleTransform.position;
 
     }
 
     private void RunAway()
     {
-        transform.DOShakePosition(1f, 0.05f, 10, 90f, false).OnComplete(() =>
+        moleTransform.DOShakePosition(1f, 0.05f, 10, 90f, false).OnComplete(() =>
         {
-            transform.DOMove(attackingStartPosition, 0.5f);
+            moleTransform.DOMove(attackingStartPosition, 0.5f);
 
         });
     }

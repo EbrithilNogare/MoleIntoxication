@@ -14,6 +14,8 @@ public class EngineConnector : MonoBehaviour
     public TileBase tileWaterSource;
     public TileBase tileToxin;
 
+    public GameObject moleGO;
+
     private GameEngine engine;
 
     void Start()

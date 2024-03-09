@@ -1,13 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System;
-using System.Data;
-using System.Diagnostics;
+
 public class GameEngine
 {
     // Map
-    List<int[]> map;  //List<Tile[]> map; where Tile is a class with variables Is Root Here, Is Bomb Here, etc.(?)
+    public List<MapTile[]> map;  //List<Tile[]> map; where Tile is a class with variables Is Root Here, Is Bomb Here, etc.(?)
 
     // Available resources  
     public int availableMetal;
@@ -46,10 +42,35 @@ public class GameEngine
     public int bombEnergyPrice = 0;
     public bool IsBombPlaced;
 
+
     public GameEngine(int startWater, int startMetal)
     {
         this.availableMetal = startWater;
         this.availableWater = startMetal;
+        GenerateMap();
+    }
+
+    private void GenerateMap()
+    {
+        map = new List<MapTile[]>();
+        for (int y = 0; y < 100; y++)
+        {
+            map.Add(new MapTile[Constants.MAP_WIDTH]);
+            for (int x = 0; x < Constants.MAP_WIDTH; x++)
+            {
+                var randomPercentage = UnityEngine.Random.Range(0f, 100f);
+                if (randomPercentage < 10f)
+                    map[y][x] = MapTile.WaterSource;
+                else if (randomPercentage < 15f)
+                    map[y][x] = MapTile.MetalSource;
+                else if (randomPercentage < 20f)
+                    map[y][x] = MapTile.EnergySource;
+                else
+                    map[y][x] = MapTile.Darkness;
+            }
+        }
+
+        map[0][7] = MapTile.Roots;
     }
 
     public void Tick()
@@ -62,7 +83,7 @@ public class GameEngine
     {
         if (availableWater >= rootPrice)
         {
-            map[x][y] = 1;
+            map[x][y] = MapTile.Roots;
         }
     }
     public void ClickOn_SolarMushOnOff()

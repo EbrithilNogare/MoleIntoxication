@@ -121,7 +121,71 @@ public class GameEngine
 
         map[y][x].HasRoots = false;
 
+        foreach (int[] direction in directions)
+        {
+            int newX = x + direction[1];
+            int newY = y + direction[0];
 
+            if (newX >= 0 && newX < map[0].Length &&
+                newY >= 0 && newY < map.Count)
+            {
+                if (map[newY][newX].HasRoots)
+                {
+                    bool ShouldRootsBeDeleted = false;
+
+                    List<int[]> rootsOnWay = new List<int[]>();
+                    rootsOnWay = FindRoots(newX, newY, rootsOnWay);
+
+                    foreach(int[] rootCoordinates in rootsOnWay)
+                    {
+                        if (rootCoordinates[0] == 7 && rootCoordinates[1] == 0)
+                        {
+                            // Don't delete the roots
+                            ShouldRootsBeDeleted = false;
+                        }
+                        else
+                        {
+                            // Delete the roots
+                            ShouldRootsBeDeleted = true;
+                        }
+                    }
+
+                    // Deleting roots
+                    if (ShouldRootsBeDeleted)
+                    {
+                        foreach (int[] rootCoordinates in rootsOnWay)
+                        {
+                            map[rootCoordinates[1]][rootCoordinates[0]].HasRoots = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public List<int[]> FindRoots(int x, int y, List<int[]> rootsOnWay)
+    {
+        bool IsAlreadyVisited = rootsOnWay.Exists(item => item[0] == y && item[1] == x);
+
+        if (!map[y][x].HasRoots || IsAlreadyVisited)
+        {
+            return rootsOnWay;
+        }
+
+        foreach (int[] direction in directions)
+        {
+            int newX = x + direction[1];
+            int newY = y + direction[0];
+
+            if (newX >= 0 && newX < map[0].Length &&
+                newY >= 0 && newY < map.Count)
+            {
+                if (map[newY][newX].HasRoots)
+                {
+                    FindRoots(x, y, rootsOnWay);
+                }
+            }
+        }
+        return rootsOnWay;
     }
     public void ClickOn_SolarMushOnOff()
     {

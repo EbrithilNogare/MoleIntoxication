@@ -71,7 +71,7 @@ public class EngineConnector : MonoBehaviour
         int x = (int)System.Math.Round(worldMousePosition.x) + (int)(Constants.MAP_WIDTH / 2);
         int y = -(int)System.Math.Round(worldMousePosition.y + .5);
 
-        if (y < 0 || x < 0 || x > Constants.MAP_WIDTH)
+        if (y < 0 || x < 0 || x >= Constants.MAP_WIDTH)
             return;
 
         Debug.Log("click: " + x + " " + y);
@@ -80,7 +80,9 @@ public class EngineConnector : MonoBehaviour
     }
     public void Scroll(InputAction.CallbackContext context)
     {
-        float newY = Camera.main.transform.position.y + context.ReadValue<float>() / 120f;
+        float newY = Camera.main.transform.position.y + context.ReadValue<float>() / 500f;
+
+        newY = System.Math.Clamp(newY, -80, 0); // todo better than 80
 
         Debug.Log("scroll: " + newY);
 

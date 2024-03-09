@@ -98,7 +98,7 @@ public class GameEngine
     }
     public void ClickOn_Map(int x, int y)
     {
-        if (availableWater >= rootPrice)
+        if (availableWater >= rootPrice && map[y][x].IsVisible && !map[y][x].HasRoots)
         {
             map[y][x].HasRoots = true;
             MakeNeighborsVisible(x, y);

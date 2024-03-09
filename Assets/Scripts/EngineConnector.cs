@@ -3,9 +3,14 @@ using UnityEngine.Tilemaps;
 
 public class EngineConnector : MonoBehaviour
 {
-    public Tilemap tilemapForeground;
-    public Tilemap tilemapBackground;
-    public Tile[] tiles;
+    public Tilemap tilemapRoots;
+    public Tilemap tilemapResources;
+    public Tile tile_darkness;
+    public Tile tile_roots;
+    public Tile tileMetalSource;
+    public Tile tileEnergySource;
+    public Tile tileWaterSource;
+    public Tile tileToxin;
 
     private GameEngine engine;
 
@@ -14,29 +19,18 @@ public class EngineConnector : MonoBehaviour
         engine = new GameEngine(20, 0);
     }
 
-    void Update()
+    void Update2()
     {
         for (int y = 0; y < 50; y++)
         {
             for (int x = 0; x < Constants.MAP_WIDTH; x++)
             {
-                tilemapForeground.SetTile(new Vector3Int(x, y, 0), MapTileToTile(engine.map[y][x]));
+                Tile rootTile = null;
+                Tile resourceTile = null;
+
+                tilemapRoots.SetTile(new Vector3Int(x, -y, 0), rootTile);
+                tilemapResources.SetTile(new Vector3Int(x, -y, 0), resourceTile);
             }
         }
-    }
-
-    Tile MapTileToTile(MapTile mapTile)
-    {
-        switch (mapTile)
-        {
-            case MapTile.Darkness: return tiles[0];
-            case MapTile.EmptyVisible: return null;
-            case MapTile.Roots: return tiles[2];
-            case MapTile.WaterSource: return tiles[3];
-            case MapTile.MetalSource: return tiles[4];
-            case MapTile.EnergySource: return tiles[5];
-            case MapTile.Toxin: return tiles[6];
-        }
-        return tiles[0];
     }
 }

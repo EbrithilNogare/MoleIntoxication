@@ -4,7 +4,10 @@ public enum MapTile
     EmptyVisible,
     Roots,
     WaterSource,
+    WaterSourceWithRoots,
     MetalSource,
+    MetalSourceWithRoots,
     EnergySource,
+    EnergySourceWithRoots,
     Toxin,
 }

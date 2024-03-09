@@ -3,7 +3,8 @@ using UnityEngine.Tilemaps;
 
 public class EngineConnector : MonoBehaviour
 {
-    public Tilemap tilemap;
+    public Tilemap tilemapForeground;
+    public Tilemap tilemapBackground;
     public Tile[] tiles;
 
     private GameEngine engine;
@@ -19,7 +20,7 @@ public class EngineConnector : MonoBehaviour
         {
             for (int x = 0; x < Constants.MAP_WIDTH; x++)
             {
-                tilemap.SetTile(new Vector3Int(x, y, 0), MapTileToTile(engine.map[y][x]));
+                tilemapForeground.SetTile(new Vector3Int(x, y, 0), MapTileToTile(engine.map[y][x]));
             }
         }
     }

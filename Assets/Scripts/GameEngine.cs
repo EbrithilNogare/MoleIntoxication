@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class GameEngine
 {
     // Map
     public List<MapTile[]> map;  //List<Tile[]> map; where Tile is a struct with variables Is Root Here, Is Bomb Here, etc.(?)
-    private List<int[]> directions;
+    private List<Vector2Int> directions;
 
     // Available resources  
     public int availableMetal;
@@ -30,6 +31,7 @@ public class GameEngine
     public int locatorMushWaterPrice = 0;
     private bool IsLocatorMushBought = false;
     private bool IsLocatorMushEnergized = false;
+    int visibilityStrength = 3; // 1, 2, 3
 
     // Mole mushroom
     public int moleMushMetalPrice = 0;
@@ -42,11 +44,13 @@ public class GameEngine
     public int bombWaterPrice = 0;
     public int bombEnergyPrice = 0;
 
+    private int deepestOptimalization = 5;
+
     public GameEngine(int startWater, int startMetal)
     {
         this.availableMetal = startMetal;
         this.availableWater = startWater;
-        this.directions = new List<int[]> { new int[] { 1, 0 }, new int[] { -1, 0 }, new int[] { 0, 1 }, new int[] { 0, -1 } };
+        this.directions = new List<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(0, -1), new Vector2Int(1, 0), new Vector2Int(-1, 0) };
         GenerateMap();
     }
 
@@ -98,10 +102,12 @@ public class GameEngine
     }
     public void ClickOn_Map(int x, int y)
     {
-        if (availableWater >= rootPrice && map[y][x].IsVisible && !map[y][x].HasRoots)
+        if (availableWater >= rootPrice && !map[y][x].HasRoots && NearestRootDistance(x, y, 2) <= 1)
         {
             map[y][x].HasRoots = true;
             MakeNeighborsVisible(x, y);
+            if (deepestOptimalization < y + 5)
+                deepestOptimalization = y + 5;
         }
     }
     public void ClickOn_Bomb(int x, int y)
@@ -114,78 +120,113 @@ public class GameEngine
             }
         }
     }
+    private int NearestRootDistance(int x, int y, int maxDepth = 5)
+    {
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+
+        queue.Enqueue(new Vector2Int(x, y));
+        visited.Add(new Vector2Int(x, y));
+
+        int[] maxDepthManhatan = { 1, 5, 13, 25, 41, 61 };
+
+        while (queue.Count > 0 && queue.Count < maxDepthManhatan[maxDepth])
+        {
+            Vector2Int current = queue.Dequeue();
+
+            if (map[current.y][current.x].HasRoots)
+            {
+                return Mathf.Abs(current.x - x) + Mathf.Abs(current.y - y);
+            }
+
+            foreach (Vector2Int direction in directions)
+            {
+                Vector2Int next = current + direction;
+
+                if (next.x >= 0 && next.x < map[0].Length &&
+                    next.y >= 0 && next.y < map.Count &&
+                    !visited.Contains(next))
+                {
+                    queue.Enqueue(next);
+                    visited.Add(next);
+                }
+            }
+        }
+
+        return 100;
+    }
     public void RemoveRoots(int x, int y)
     {
         if (!map[y][x].HasRoots)
-            throw new System.Exception("no roots");
+            Debug.LogError("no roots");
 
         map[y][x].HasRoots = false;
 
-        foreach (int[] direction in directions)
+        foreach (Vector2Int direction in directions)
         {
-            int newX = x + direction[1];
-            int newY = y + direction[0];
+            int newX = x + direction.x;
+            int newY = y + direction.y;
 
             if (newX >= 0 && newX < map[0].Length &&
                 newY >= 0 && newY < map.Count)
             {
                 if (map[newY][newX].HasRoots)
                 {
-                    bool ShouldRootsBeDeleted = false;
+                    List<Vector2Int> rootsOnWay = FindRoots(newX, newY);
 
-                    List<int[]> rootsOnWay = new List<int[]>();
-                    rootsOnWay = FindRoots(newX, newY, rootsOnWay);
+                    bool containsMainRoot = rootsOnWay.Exists(item => item.y == 0 && item.x == 7);
 
-                    foreach(int[] rootCoordinates in rootsOnWay)
+                    if (!containsMainRoot)
                     {
-                        if (rootCoordinates[0] == 7 && rootCoordinates[1] == 0)
+                        foreach (Vector2Int rootCoordinates in rootsOnWay)
                         {
-                            // Don't delete the roots
-                            ShouldRootsBeDeleted = false;
+                            map[rootCoordinates.y][rootCoordinates.x].HasRoots = false;
                         }
-                        else
-                        {
-                            // Delete the roots
-                            ShouldRootsBeDeleted = true;
-                        }
-                    }
 
-                    // Deleting roots
-                    if (ShouldRootsBeDeleted)
-                    {
-                        foreach (int[] rootCoordinates in rootsOnWay)
-                        {
-                            map[rootCoordinates[1]][rootCoordinates[0]].HasRoots = false;
-                        }
+                        RecomputeVisibility();
                     }
                 }
             }
         }
     }
-    public List<int[]> FindRoots(int x, int y, List<int[]> rootsOnWay)
+    public void RecomputeVisibility()
     {
-        bool IsAlreadyVisited = rootsOnWay.Exists(item => item[0] == y && item[1] == x);
-
-        if (!map[y][x].HasRoots || IsAlreadyVisited)
+        for (int y = 0; y < System.Math.Min(deepestOptimalization, map.Count); y++)
         {
-            return rootsOnWay;
-        }
-
-        foreach (int[] direction in directions)
-        {
-            int newX = x + direction[1];
-            int newY = y + direction[0];
-
-            if (newX >= 0 && newX < map[0].Length &&
-                newY >= 0 && newY < map.Count)
+            for (int x = 0; x < map[0].Length; x++)
             {
-                if (map[newY][newX].HasRoots)
-                {
-                    FindRoots(x, y, rootsOnWay);
-                }
+                map[y][x].IsVisible = NearestRootDistance(x, y, visibilityStrength) <= visibilityStrength;
             }
         }
-        return rootsOnWay;
+    }
+    public List<Vector2Int> FindRoots(int x, int y)
+    {
+        List<Vector2Int> alreadyVisited = new List<Vector2Int>();
+        List<Vector2Int> toVisit = new List<Vector2Int> { new Vector2Int(x, y) };
+
+        while (toVisit.Count > 0)
+        {
+            foreach (Vector2Int direction in directions)
+            {
+                var directionToProbe = toVisit[0] + direction;
+
+                if (directionToProbe.x >= 0
+                    && directionToProbe.x < map[0].Length
+                    && directionToProbe.y >= 0
+                    && directionToProbe.y < map.Count
+                    && map[directionToProbe.y][directionToProbe.x].HasRoots
+                    && !alreadyVisited.Exists(item => item.y == directionToProbe.y && item.x == directionToProbe.x)
+                    && !toVisit.Exists(item => item.y == directionToProbe.y && item.x == directionToProbe.x)
+                )
+                {
+                    toVisit.Add(directionToProbe);
+                }
+            }
+            alreadyVisited.Add(toVisit[0]);
+            toVisit.RemoveAt(0);
+        }
+
+        return alreadyVisited;
     }
     public void ClickOn_SolarMushOnOff()
     {
@@ -313,20 +354,12 @@ public class GameEngine
     /// </summary>
     public void MakeNeighborsVisible(int centerX, int centerY)
     {
-        foreach (int[] direction in directions)
-        {
-            int newX = centerX + direction[1];
-            int newY = centerY + direction[0];
-
-            if (newX >= 0 && newX < map[0].Length &&
-                newY >= 0 && newY < map.Count)
+        for (int x = centerX - 3; x <= centerX + 3; x++)
+            for (int y = centerY - 3; y <= centerY + 3; y++)
             {
-                if (!map[newY][newX].IsVisible)
-                {
-                    map[newY][newX].IsVisible = true;
-                }
+                Debug.Log("here");
+                if (x >= 0 && y >= 0 && x < map[0].Length && y < map.Count && Mathf.Abs(centerX - x) + Mathf.Abs(centerY - y) <= visibilityStrength)
+                    map[y][x].IsVisible = true;
             }
-        }
-
     }
 }

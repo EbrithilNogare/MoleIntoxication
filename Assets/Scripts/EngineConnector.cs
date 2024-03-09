@@ -81,7 +81,11 @@ public class EngineConnector : MonoBehaviour
 
         // Debug.Log("click: " + x + " " + y);
 
-        engine.ClickOn_Map(x, y);
+        if (!engine.map[y][x].HasRoots)
+            engine.ClickOn_Map(x, y);
+        else
+            engine.RemoveRoots(x, y);
+
     }
     public void Scroll(InputAction.CallbackContext context)
     {

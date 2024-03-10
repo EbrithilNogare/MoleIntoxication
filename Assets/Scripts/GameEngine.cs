@@ -133,14 +133,14 @@ public class GameEngine
     private int NearestRootDistance(int x, int y, int maxDepth = 5)
     {
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
-        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+        List<Vector2Int> visited = new List<Vector2Int>();
 
         queue.Enqueue(new Vector2Int(x, y));
         visited.Add(new Vector2Int(x, y));
 
         int[] maxDepthManhatan = { 1, 5, 13, 25, 41, 61 };
 
-        while (queue.Count > 0 && queue.Count < maxDepthManhatan[maxDepth])
+        while (queue.Count > 0 && visited.Count <= maxDepthManhatan[maxDepth])
         {
             Vector2Int current = queue.Dequeue();
 
@@ -149,18 +149,23 @@ public class GameEngine
                 return Mathf.Abs(current.x - x) + Mathf.Abs(current.y - y);
             }
 
+            if (!visited.Exists(item => item.y == current.y && item.x == current.x))
+            {
+                continue;
+            }
+
             foreach (Vector2Int direction in directions)
             {
                 Vector2Int next = current + direction;
 
                 if (next.x >= 0 && next.x < map[0].Length &&
                     next.y >= 0 && next.y < map.Count &&
-                    !visited.Contains(next))
+                    !visited.Exists(item => item.y == next.y && item.x == next.x))
                 {
                     queue.Enqueue(next);
-                    visited.Add(next);
                 }
             }
+            visited.Add(current);
         }
 
         return 100;
@@ -192,12 +197,12 @@ public class GameEngine
                         {
                             map[rootCoordinates.y][rootCoordinates.x].HasRoots = false;
                         }
-
-                        RecomputeVisibility();
                     }
                 }
             }
         }
+
+        RecomputeVisibility();
     }
     public void RecomputeVisibility()
     {

@@ -70,6 +70,7 @@ public class EngineConnector : MonoBehaviour
 
         if (moleTimeout == 5)
         {
+            moleTimeout--;
             moleHeight = 0;
             for (int y = 0; y < engine.map.Count; y++)
                 for (int x = 0; x < engine.map[0].Length; x++)

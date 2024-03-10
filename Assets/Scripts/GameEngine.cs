@@ -159,7 +159,6 @@ public class GameEngine
             Debug.LogError("no roots");
 
         map[y][x].HasRoots = false;
-        map[y][x].type = MapTileType.Empty;
 
         foreach (Vector2Int direction in directions)
         {

@@ -32,7 +32,8 @@ public class Mole
     public bool IsBombed = false;
     public bool IsToxicated = false;
 
-    public int MaxNumbreOfRootsToBeEaten = 3;
+    public int MaxNumbreOfRootsToBeEaten = 5;
+    public int numOfToBeEatenRoots = 0;
 
     public float Health = 100;
 
@@ -135,30 +136,50 @@ public class Mole
     private void EatRoots(int xPos)
     {
         Debug.Log("tu");
-        int numOfToBeEatenRoots = UnityEngine.Random.Range(1, MaxNumbreOfRootsToBeEaten);
+        numOfToBeEatenRoots = UnityEngine.Random.Range(0, MaxNumbreOfRootsToBeEaten);
         lastEatenRoot = (xPos, -(int)attackingStartPosition.y);
         gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
-        Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
-        for (int i = 0; i < numOfToBeEatenRoots; i++)
+        Debug.Log("MNAM:" + numOfToBeEatenRoots + "x ... AT" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
+        //for (int i = 0; i < numOfToBeEatenRoots; i++)
+        //{
+        if (numOfToBeEatenRoots > 0)
         {
-            GenerteEatenRoot(lastEatenRoot);
-            if (gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type != MapTileType.Toxin)
+            TweenToEat();
+
+        }
+
+
+    }
+
+    private void TweenToEat()
+    {
+        GenerteEatenRoot(lastEatenRoot);
+        if (gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type != MapTileType.Toxin)
+        {
+            Vector3 endAttackPosition = new Vector3(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2);
+            moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
             {
-                Vector3 endAttackPosition = new Vector3(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2);
-                moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
+                gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
+                Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
+                numOfToBeEatenRoots--;
+                if (numOfToBeEatenRoots == 0)
                 {
-                    gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
-                    Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
+                    Debug.Log("Run home");
+                    moleTransform.DOMoveX(-15f, 1f);
 
-                });
-            }
-            else
-            {
-                RunAway();
-                return;
-            }
+                }
+                else
+                {
+                    TweenToEat();
 
+                }
 
+            });
+        }
+        else
+        {
+            RunAway();
+            return;
         }
     }
 
@@ -166,25 +187,25 @@ public class Mole
     {
         List<(int, int)> rootsPosition = new List<(int, int)>();
 
-        if (gameEnginInstance.map[0].Length <= positionStart.Item2 - 1
-            && gameEnginInstance.map[positionStart.Item1][positionStart.Item2 - 1].HasRoots)
+        if (0 <= positionStart.Item2 - 1
+            && gameEnginInstance.map[positionStart.Item2][positionStart.Item1 - 1].HasRoots)
         {
-            rootsPosition.Add((positionStart.Item1, positionStart.Item2 - 1));
+            rootsPosition.Add((positionStart.Item1 - 1, positionStart.Item2));
         }
-        if (gameEnginInstance.map[0].Length >= positionStart.Item2 + 1 &&
-            gameEnginInstance.map[positionStart.Item1][positionStart.Item2 + 1].HasRoots)
-        {
-            rootsPosition.Add((positionStart.Item1, positionStart.Item2 + 1));
-        }
-        if (gameEnginInstance.map.Count >= positionStart.Item1 + 1 &&
-            gameEnginInstance.map[positionStart.Item1 + 1][positionStart.Item2].HasRoots)
+        if (gameEnginInstance.map.Count > positionStart.Item2 + 1 &&
+            gameEnginInstance.map[positionStart.Item2][positionStart.Item1 + 1].HasRoots)
         {
             rootsPosition.Add((positionStart.Item1 + 1, positionStart.Item2));
         }
-        if (gameEnginInstance.map.Count <= positionStart.Item1 - 1 &&
-            gameEnginInstance.map[positionStart.Item1 - 1][positionStart.Item2].HasRoots)
+        if (gameEnginInstance.map[0].Length > positionStart.Item1 + 1 &&
+            gameEnginInstance.map[positionStart.Item2 + 1][positionStart.Item1].HasRoots)
         {
-            rootsPosition.Add((positionStart.Item1 - 1, positionStart.Item2));
+            rootsPosition.Add((positionStart.Item1, positionStart.Item2 + 1));
+        }
+        if (0 <= positionStart.Item1 - 1 &&
+            gameEnginInstance.map[positionStart.Item2 - 1][positionStart.Item1].HasRoots)
+        {
+            rootsPosition.Add((positionStart.Item1, positionStart.Item2 - 1));
         }
 
         int way = UnityEngine.Random.Range(0, rootsPosition.Count);

@@ -151,14 +151,20 @@ public class EngineConnector : MonoBehaviour
             engine.ClickOn_LocatorMushOnOff();
         // todo make it glow on / off - also all others
         else
+        {
+            SFXManager.Instance.PlayMushroomPurchase();
             engine.ClickOn_LocatorMushroom();
+        }
     }
     public void OnSonarMushroomClick()
     {
         if (engine.IsSonarMushBought)
             engine.ClickOn_SonarMushOnOff();
         else
+        {
+            SFXManager.Instance.PlayMushroomPurchase();
             engine.ClickOn_SonarMushroom();
+        }
     }
     public void OnVladaMushroomClick()
     {
@@ -182,7 +188,10 @@ public class EngineConnector : MonoBehaviour
         if (engine.IsSolarMushBought)
             engine.ClickOn_SolarMushOnOff();
         else
+        {
+            SFXManager.Instance.PlayMushroomPurchase();
             engine.ClickOn_SolarMushroom();
+        }
     }
     public void OnWaterMushroomClick()
     {
@@ -190,7 +199,10 @@ public class EngineConnector : MonoBehaviour
         if (engine.IsWaterMushBought)
             engine.ClickOn_WaterMushOnOff();
         else
+        {
+            SFXManager.Instance.PlayMushroomPurchase();
             engine.ClickOn_WaterMushroom();
+        }
     }
     private void RerenderMushrooms()
     {

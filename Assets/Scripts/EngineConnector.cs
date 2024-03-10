@@ -43,7 +43,7 @@ public class EngineConnector : MonoBehaviour
 
     void Start()
     {
-        engine = new GameEngine(500, 500, 500);
+        engine = new GameEngine(20, 00, 00);
         toxinPlacementMode = false;
         RerenderMushrooms();
     }

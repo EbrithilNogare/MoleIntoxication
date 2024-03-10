@@ -52,9 +52,11 @@ public class Mole
 
     #endregion
 
-    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO, Transform healthBarT, int _health, System.Action<int> healthUpdate, System.Action returnTurn)
+    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO, Transform healthBarT, int _health, System.Action<int> healthUpdate, System.Action returnTurn, int MaxNumbreOfRootsToBeEaten)
     {
         //GenerateAttack(generatedAttackHeight);
+        this.MaxNumbreOfRootsToBeEaten = MaxNumbreOfRootsToBeEaten;
+        this.returnTurn = returnTurn;
         PlayerEndViewValue = generatedAttackHeight;
         moleTransform = moleGO;
         healthBar = healthBarT;
@@ -66,7 +68,6 @@ public class Mole
         IsToxicated = false;
         IsAttacking = true;
         this.healthUpdate = healthUpdate;
-        this.returnTurn = returnTurn;
     }
 
     // Start is called before the first frame update
@@ -146,7 +147,7 @@ public class Mole
     private void EatRoots(int xPos)
     {
         Debug.Log("tu");
-        numOfToBeEatenRoots = UnityEngine.Random.Range(0, MaxNumbreOfRootsToBeEaten);
+        numOfToBeEatenRoots = UnityEngine.Random.Range(MaxNumbreOfRootsToBeEaten / 2, MaxNumbreOfRootsToBeEaten);
         lastEatenRoot = (xPos, -(int)attackingStartPosition.y);
         gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
         Debug.Log("MNAM:" + numOfToBeEatenRoots + "x ... AT" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
@@ -240,23 +241,19 @@ public class Mole
     {
         List<(int, int)> rootsPosition = new List<(int, int)>();
 
-        if (0 <= positionStart.Item2 - 1
-            && gameEnginInstance.map[positionStart.Item2][positionStart.Item1 - 1].HasRoots)
+        if (0 <= positionStart.Item1 - 1 && gameEnginInstance.map[positionStart.Item2][positionStart.Item1 - 1].HasRoots)
         {
             rootsPosition.Add((positionStart.Item1 - 1, positionStart.Item2));
         }
-        if (gameEnginInstance.map.Count > positionStart.Item2 + 1 &&
-            gameEnginInstance.map[positionStart.Item2][positionStart.Item1 + 1].HasRoots)
+        if (gameEnginInstance.map[0].Length > positionStart.Item1 + 1 && gameEnginInstance.map[positionStart.Item2][positionStart.Item1 + 1].HasRoots)
         {
             rootsPosition.Add((positionStart.Item1 + 1, positionStart.Item2));
         }
-        if (gameEnginInstance.map[0].Length > positionStart.Item1 + 1 &&
-            gameEnginInstance.map[positionStart.Item2 + 1][positionStart.Item1].HasRoots)
+        if (gameEnginInstance.map.Count > positionStart.Item2 + 1 && gameEnginInstance.map[positionStart.Item2 + 1][positionStart.Item1].HasRoots)
         {
             rootsPosition.Add((positionStart.Item1, positionStart.Item2 + 1));
         }
-        if (0 <= positionStart.Item1 - 1 &&
-            gameEnginInstance.map[positionStart.Item2 - 1][positionStart.Item1].HasRoots)
+        if (0 <= positionStart.Item2 - 1 && gameEnginInstance.map[positionStart.Item2 - 1][positionStart.Item1].HasRoots)
         {
             rootsPosition.Add((positionStart.Item1, positionStart.Item2 - 1));
         }

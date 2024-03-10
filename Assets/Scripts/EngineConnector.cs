@@ -39,6 +39,7 @@ public class EngineConnector : MonoBehaviour
     private int moleTimeout = 50; // in actions
     private int moleHeight = 5;
     private bool moleMove = false;
+    private int rootsToEat = 5;
 
     void Start()
     {
@@ -140,7 +141,8 @@ public class EngineConnector : MonoBehaviour
     public void TestMole()
     {
         moleMove = true;
-        Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole, ActualHealth, (x) => ActualHealth = x, () => moleMove = false); ;
+        Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole, ActualHealth, (x) => ActualHealth = x, () => moleMove = false, rootsToEat);
+        rootsToEat += 2;
         dangerZone.transform.position = new Vector3(-17.5f, 0, transform.position.z); ;
     }
     public void OnLocatorMushroomClick()

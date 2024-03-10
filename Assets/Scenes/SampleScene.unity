@@ -8544,7 +8544,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4566724807887147828}
+    m_TransformParent: {fileID: 1558981413}
     m_Modifications:
     - target: {fileID: 3166902293587051, guid: b1269b3c210616c4990aae72fc16a0ce, type: 3}
       propertyPath: m_Name
@@ -8600,15 +8600,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2425663910545074375, guid: b1269b3c210616c4990aae72fc16a0ce, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2425663910545074375, guid: b1269b3c210616c4990aae72fc16a0ce, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2425663910545074375, guid: b1269b3c210616c4990aae72fc16a0ce, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2425663910545074375, guid: b1269b3c210616c4990aae72fc16a0ce, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -8638,6 +8638,11 @@ PrefabInstance:
 --- !u!224 &1032347191 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2425663910545074375, guid: b1269b3c210616c4990aae72fc16a0ce, type: 3}
+  m_PrefabInstance: {fileID: 1032347190}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1032347192 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8673546130407531688, guid: b1269b3c210616c4990aae72fc16a0ce, type: 3}
   m_PrefabInstance: {fileID: 1032347190}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1065878434
@@ -8922,6 +8927,42 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.25, y: 2.8125}
   m_EdgeRadius: 0
+--- !u!1 &1558981412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1558981413}
+  m_Layer: 5
+  m_Name: HB
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1558981413
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558981412}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1032347191}
+  m_Father: {fileID: 4566724807887147828}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1565319408
 GameObject:
   m_ObjectHideFlags: 0
@@ -9980,7 +10021,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 801796209}
-  - {fileID: 1032347191}
+  - {fileID: 1558981413}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -10042,7 +10083,7 @@ MonoBehaviour:
   WaterMushroom: {fileID: 69664076}
   tileSelector: {fileID: 0}
   moleGO: {fileID: 503500168}
-  healthBarMole: {fileID: 1032347191}
+  healthBarMole: {fileID: 1032347192}
 --- !u!114 &6812317950171637043
 MonoBehaviour:
   m_ObjectHideFlags: 0

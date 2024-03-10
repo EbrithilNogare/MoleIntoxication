@@ -1,10 +1,6 @@
-using System.Collections;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using System;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
 
 public class Mole
@@ -117,9 +113,9 @@ public class Mole
                 healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);
                 if (Health == 0)
                 {
-                    SceneManager.LoadScene("Win");
-                    //TODO end mole
                     Debug.Log("HEY VICTORY!");
+                    //TODO end mole
+                    SceneManager.LoadScene("Win");
                 }
 
                 RunAway();

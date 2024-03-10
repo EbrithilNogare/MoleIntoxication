@@ -8,9 +8,9 @@ public class GameEngine
     private List<Vector2Int> directions;
 
     // Available resources  
-    public int availableMetal;
-    public int availableWater;
-    public int availableEnergy;
+    public float availableMetal;
+    public float availableWater;
+    public float availableEnergy;
 
     public int rootPrice = 1;
 
@@ -96,9 +96,9 @@ public class GameEngine
         MakeNeighborsVisible(7, 0);
     }
 
-    public void Tick()
+    public void Tick(float timeDelta)
     {
-        UpdateResources();
+        UpdateResources(timeDelta);
     }
     public void ClickOn_Map(int x, int y)
     {
@@ -327,7 +327,7 @@ public class GameEngine
             IsMoleMushBought = true;
         }
     }
-    public void UpdateResources()
+    public void UpdateResources(float timeDelta)
     {
         for (int y = 0; y < System.Math.Min(deepestOptimalization, map.Count); y++)
         {
@@ -338,17 +338,24 @@ public class GameEngine
                     switch (map[y][x].type)
                     {
                         case MapTileType.WaterSource:
-                            map[y][x].currentResources -= 1;
+                            map[y][x].currentResources -= timeDelta;
+                            availableWater += timeDelta;
                             break;
                         case MapTileType.MetalSource:
-                            map[y][x].currentResources -= 1;
+                            map[y][x].currentResources -= timeDelta;
+                            availableMetal += timeDelta;
                             break;
                         case MapTileType.EnergySource:
-                            map[y][x].currentResources -= 1;
+                            map[y][x].currentResources -= timeDelta;
+                            availableEnergy += timeDelta;
                             break;
                         case MapTileType.Toxin:
-                            map[y][x].currentResources -= 1;
+                            map[y][x].currentResources -= timeDelta;
                             break;
+                    }
+                    if (map[y][x].currentResources <= 0)
+                    {
+                        map[y][x].type = MapTileType.Empty;
                     }
                 }
             }

@@ -12,6 +12,6 @@ public struct MapTile
     public bool IsVisible;
     public bool HasRoots;
 
-    public int capacityResources;
-    public int currentResources;
+    public float capacityResources;
+    public float currentResources;
 }

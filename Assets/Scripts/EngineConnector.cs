@@ -39,11 +39,11 @@ public class EngineConnector : MonoBehaviour
     private int moleTimeout = 50; // in actions
     private int moleHeight = 5;
     private bool moleMove = false;
-    private int rootsToEat = 5;
+    private int rootsToEat = 3;
 
     void Start()
     {
-        engine = new GameEngine(20, 00, 00);
+        engine = new GameEngine(200, 200, 200);
         toxinPlacementMode = false;
         RerenderMushrooms();
     }
@@ -142,7 +142,7 @@ public class EngineConnector : MonoBehaviour
     {
         moleMove = true;
         Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole, ActualHealth, (x) => ActualHealth = x, () => moleMove = false, rootsToEat);
-        rootsToEat += 2;
+        rootsToEat += 1;
         dangerZone.transform.position = new Vector3(-17.5f, 0, transform.position.z); ;
     }
     public void OnLocatorMushroomClick()

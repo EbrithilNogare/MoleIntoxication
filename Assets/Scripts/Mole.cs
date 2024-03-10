@@ -149,7 +149,7 @@ public class Mole
     private void EatRoots(int xPos)
     {
         Debug.Log("tu");
-        numOfToBeEatenRoots = UnityEngine.Random.Range(MaxNumbreOfRootsToBeEaten / 2, MaxNumbreOfRootsToBeEaten);
+        numOfToBeEatenRoots = UnityEngine.Random.Range(0, MaxNumbreOfRootsToBeEaten);
         lastEatenRoot = (xPos, -(int)attackingStartPosition.y);
         gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
         SFXManager.Instance.PlayMole();

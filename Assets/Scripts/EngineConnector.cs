@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -13,6 +14,10 @@ public class EngineConnector : MonoBehaviour
     public TileBase tileEnergySource;
     public TileBase tileWaterSource;
     public TileBase tileToxin;
+
+    public TMP_Text waterValue;
+    public TMP_Text metalValue;
+    public TMP_Text energyValue;
 
     public GameObject moleGO;
 
@@ -30,6 +35,10 @@ public class EngineConnector : MonoBehaviour
         int maxY = (int)(-Camera.main.transform.position.y + cameraHeight) + 3;
 
         Debug.Log("ENGINE   water: " + engine.availableWater + "   energy: " + engine.availableEnergy + "   metal: " + engine.availableMetal);
+
+        waterValue.SetText(((int)(engine.availableWater)).ToString());
+        waterValue.SetText(((int)(engine.availableWater)).ToString());
+        waterValue.SetText(((int)(engine.availableWater)).ToString());
 
         engine.Tick(Time.deltaTime);
 

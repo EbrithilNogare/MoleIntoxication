@@ -63,7 +63,7 @@ public class EngineConnector : MonoBehaviour
         engine.Tick(Time.deltaTime);
 
         //check death
-        if (engine.availableWater == 0 && (engine.availableEnergy == 0 || !engine.IsWaterMushBought))
+        if (!engine.map[0][7].HasRoots || (engine.availableWater == 0 && (engine.availableEnergy == 0 || !engine.IsWaterMushBought)))
         {
             SceneManager.LoadScene("Lose", LoadSceneMode.Single);
         }
@@ -197,6 +197,7 @@ public class EngineConnector : MonoBehaviour
         if (engine.IsLocatorMushBought)
         {
             LocatorMushroom.GetComponent<SpriteRenderer>().color = engine.IsLocatorMushEnergized ? active : notActive;
+            LocatorMushroom.GetComponent<Animator>().SetBool("playing", engine.IsLocatorMushEnergized);
         }
         else
         {
@@ -206,6 +207,7 @@ public class EngineConnector : MonoBehaviour
         if (engine.IsSonarMushBought)
         {
             SonarMushroom.GetComponent<SpriteRenderer>().color = engine.IsSonarMushEnergized ? active : notActive;
+            SonarMushroom.GetComponent<Animator>().SetBool("playing", engine.IsSonarMushEnergized);
         }
         else
         {
@@ -224,6 +226,7 @@ public class EngineConnector : MonoBehaviour
         if (engine.IsWaterMushBought)
         {
             WaterMushroom.GetComponent<SpriteRenderer>().color = engine.IsWaterMushEnergized ? active : notActive;
+            WaterMushroom.GetComponent<Animator>().SetBool("playing", engine.IsWaterMushEnergized);
         }
         else
         {

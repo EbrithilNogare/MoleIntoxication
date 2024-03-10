@@ -13,14 +13,14 @@ public class GameEngine
     public float availableWater;
     public float availableEnergy;
 
-    public float waterPercentage = 5f;
+    public float waterPercentage = 6f;
     public float energyPercentage = 2f;
-    public float metalPercentage = 1f;
+    public float metalPercentage = 3f;
 
     public int rootPrice = 1;
 
     // All mushrooms(except of Vlada and solar one)
-    public int energyOnOffMushPrice = 1;
+    public int energyOnOffLocatorPrice = 20;
 
     // Water mushroom
     public int waterMushMetalPrice = 15;
@@ -262,7 +262,6 @@ public class GameEngine
         {
             // Off
             IsWaterMushEnergized = !IsWaterMushEnergized;
-            availableEnergy += energyOnOffMushPrice;
         }
         else
         {
@@ -270,7 +269,6 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsWaterMushEnergized = !IsWaterMushEnergized;
-                availableEnergy -= energyOnOffMushPrice;
             }
         }
     }
@@ -280,7 +278,6 @@ public class GameEngine
         {
             // Off
             IsLocatorMushEnergized = !IsLocatorMushEnergized;
-            availableEnergy += energyOnOffMushPrice;
         }
         else
         {
@@ -288,7 +285,7 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsLocatorMushEnergized = !IsLocatorMushEnergized;
-                availableEnergy -= energyOnOffMushPrice;
+                availableEnergy -= energyOnOffLocatorPrice;
             }
         }
     }
@@ -298,7 +295,6 @@ public class GameEngine
         {
             // Off
             IsSonarMushEnergized = !IsSonarMushEnergized;
-            availableEnergy += energyOnOffMushPrice;
             visibilityStrength = 2;
             RecomputeVisibility();
         }
@@ -308,7 +304,6 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsSonarMushEnergized = !IsSonarMushEnergized;
-                availableEnergy -= energyOnOffMushPrice;
                 visibilityStrength = 3;
                 RecomputeVisibility();
             }
@@ -391,10 +386,10 @@ public class GameEngine
     public void UpdateMushroomCompanions(float timeDelta)
     {
         // resolve energy
-        if (IsLocatorMushEnergized && availableEnergy >= 1)
-            availableEnergy -= timeDelta;
-        else
-            IsLocatorMushEnergized = false;
+        //if (IsLocatorMushEnergized && availableEnergy >= 1)
+        //    availableEnergy -= timeDelta;
+        //else
+        //    IsLocatorMushEnergized = false;
 
         if (IsSonarMushEnergized && availableEnergy >= 1)
             availableEnergy -= timeDelta;

@@ -12,52 +12,73 @@ public class SFXManager : SmartSingleton<SFXManager>
     public AudioClip Roots;
     public AudioClip ToxinPop;
 
-    public AudioSource audioSource;
+    public AudioSource defaultAudioSource;
+    public List<AudioSource> audioSources;
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        base.Awake();
+
+        for (int i = 0; i < 7; i++)
+        {
+            audioSources.Add(Instantiate(defaultAudioSource,transform));
+            audioSources[i].gameObject.SetActive(true);
+        }
+
+        audioSources[0].clip = Button;
+        audioSources[1].clip = MoleEating;
+        audioSources[2].clip = MushroomOn;
+        audioSources[3].clip = MushroomOff;
+        audioSources[4].clip = MushroomPurchase;
+        audioSources[5].clip = Roots;
+        audioSources[6].clip = ToxinPop;
     }
 
     public void Play(AudioClip clip)
     {
-        //audioSource.clip = clip;
-        //audioSource.Play();
-        AudioSource.PlayClipAtPoint(clip,Camera.main.transform.position);
+        defaultAudioSource.clip = clip;
+        defaultAudioSource.Play();
     }
 
     public void PlayButton()
     {
-        Play(Button);
+        audioSources[0].Play();
+        // Play(Button);
     }
 
     public void PlayMole()
     {
-        Play(MoleEating);
+        audioSources[1].Play();
+        // Play(MoleEating);
     }
 
     public void PlayMushroomOn()
     {
-        Play(MushroomOn);
+        audioSources[2].Play();
+        // Play(MushroomOn);
     }
 
     public void PlayMushroomOff()
     {
-        Play(MushroomOff);
+        audioSources[3].Play();
+        // Play(MushroomOff);
     }
 
     public void PlayMushroomPurchase()
     {
-        Play(MushroomPurchase);
+        audioSources[4].Play();
+        // Play(MushroomPurchase);
     }
 
     public void PlayRoots()
     {
-        Play(Roots);
+        audioSources[5].Play();
+        // Play(Roots);
     }
 
     public void PlayToxinPop()
     {
-        Play(ToxinPop);
+        audioSources[6].Play();
+        // Play(ToxinPop);
     }
 }

@@ -85,7 +85,7 @@ public class EngineConnector : MonoBehaviour
         int precision = 10;
         float randomOffset = Random.Range(-precision / 2f, precision / 2f);
 
-        dangerZone.transform.position = new Vector3(0, -System.Math.Max(precision / 2f, moleHeight + randomOffset), transform.position.z); ;
+        dangerZone.transform.position = new Vector3(0, -System.Math.Max(precision / 2f, moleHeight + randomOffset + 1), transform.position.z); ;
 
         Vector3 scale = dangerZone.transform.localScale;
         scale.y = precision + 2;
@@ -93,7 +93,26 @@ public class EngineConnector : MonoBehaviour
 
         Mole m = new Mole(moleHeight, engine, moleGO.transform);
     }
+    public void OnLocatorMushroomClick()
+    {
 
+    }
+    public void OnSonarMushroomClick()
+    {
+
+    }
+    public void OnVladaMushroomClick()
+    {
+
+    }
+    public void OnSolarMushroomClick()
+    {
+
+    }
+    public void OnWaterMushroomClick()
+    {
+
+    }
     public void Click(InputAction.CallbackContext context)
     {
         if (!context.started) return;
@@ -117,14 +136,15 @@ public class EngineConnector : MonoBehaviour
         int x = (int)System.Math.Round(worldMousePosition.x) + (int)(Constants.MAP_WIDTH / 2);
         int y = -(int)System.Math.Round(worldMousePosition.y + .5);
 
-        if (y < 0 || x < 0 || x >= Constants.MAP_WIDTH)
-            return;
-
-        // TODO remove roots removing method
-        if (!engine.map[y][x].HasRoots)
-            engine.ClickOn_Map(x, y);
-        else
-            engine.RemoveRoots(x, y);
+        if (y >= 0 && x >= 0 && x < Constants.MAP_WIDTH)
+        {
+            // map hit
+            // TODO remove roots removing method
+            if (!engine.map[y][x].HasRoots)
+                engine.ClickOn_Map(x, y);
+            else
+                engine.RemoveRoots(x, y);
+        }
     }
     public void Scroll(InputAction.CallbackContext context)
     {

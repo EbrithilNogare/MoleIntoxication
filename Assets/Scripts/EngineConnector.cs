@@ -65,7 +65,7 @@ public class EngineConnector : MonoBehaviour
         engine.Tick(Time.deltaTime);
 
         //check death
-        if (!engine.map[0][7].HasRoots || (engine.availableWater == 0 && (engine.availableEnergy == 0 || !engine.IsWaterMushBought)))
+        if (!engine.map[0][7].HasRoots || (engine.availableWater < 1 && (engine.availableEnergy < 1 || !engine.IsWaterMushBought)))
         {
             SceneManager.LoadScene("Lose", LoadSceneMode.Single);
         }

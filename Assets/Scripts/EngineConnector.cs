@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class EngineConnector : MonoBehaviour
@@ -35,6 +36,8 @@ public class EngineConnector : MonoBehaviour
     private bool toxinPlacementMode;
 
     private int ActualHealth = 100;
+    private int moleTimeout = 50; // in actions
+    private int moleHeight = 5;
 
     void Start()
     {
@@ -58,6 +61,31 @@ public class EngineConnector : MonoBehaviour
         RerenderMushrooms();
 
         engine.Tick(Time.deltaTime);
+
+        //check death
+        if (engine.availableWater == 0 && (engine.availableEnergy == 0 || !engine.IsWaterMushBought))
+        {
+            SceneManager.LoadScene("Lose", LoadSceneMode.Single);
+        }
+
+        if (moleTimeout == 5)
+        {
+            moleHeight = 0;
+            for (int y = 0; y < engine.map.Count; y++)
+                for (int x = 0; x < engine.map[0].Length; x++)
+                    if (engine.map[y][x].HasRoots)
+                        moleHeight = y;
+
+            moleHeight = System.Math.Max(0, moleHeight + Random.Range(-5, 3));
+
+            PrepareMole();
+        }
+
+        if (moleTimeout < 0)
+        {
+            moleTimeout = 20;
+            TestMole();
+        }
 
         for (int y = System.Math.Max(0, minY); y < System.Math.Min(100, maxY); y++)
         {
@@ -96,18 +124,21 @@ public class EngineConnector : MonoBehaviour
         }
     }
 
-    [MyBox.ButtonMethod]
-    public void TestMole()
+    public void PrepareMole()
     {
-        int moleHeight = 10;
-        int precision = 10;
+        int precision = engine.IsLocatorMushBought && engine.IsLocatorMushEnergized ? 3 : 10;
         float randomOffset = Random.Range(-precision / 2f, precision / 2f);
 
         dangerZone.transform.position = new Vector3(-7.5f, -System.Math.Max(precision / 2f, moleHeight + randomOffset + 1), transform.position.z); ;
 
         dangerZone.GetComponent<SpriteRenderer>().size = new Vector2(.5f, precision + 2);
+    }
 
+    [MyBox.ButtonMethod]
+    public void TestMole()
+    {
         Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole, ActualHealth, (x) => ActualHealth = x);
+        dangerZone.transform.position = new Vector3(-17.5f, 0, transform.position.z); ;
     }
     public void OnLocatorMushroomClick()
     {
@@ -229,9 +260,13 @@ public class EngineConnector : MonoBehaviour
                 engine.ClickOn_Bomb(x, y);
                 toxinPlacementMode = false;
                 tileSelector.color = Color.white;
+                moleTimeout--;
             }
             else
+            {
                 engine.ClickOn_Map(x, y);
+                moleTimeout--;
+            }
         }
         else
         {

@@ -34,11 +34,10 @@ public class EngineConnector : MonoBehaviour
         int minY = (int)(-Camera.main.transform.position.y - cameraHeight) - 3;
         int maxY = (int)(-Camera.main.transform.position.y + cameraHeight) + 3;
 
-        Debug.Log("ENGINE   water: " + engine.availableWater + "   energy: " + engine.availableEnergy + "   metal: " + engine.availableMetal);
-
+        // render GUI
         waterValue.SetText(((int)(engine.availableWater)).ToString());
-        waterValue.SetText(((int)(engine.availableWater)).ToString());
-        waterValue.SetText(((int)(engine.availableWater)).ToString());
+        metalValue.SetText(((int)(engine.availableMetal)).ToString());
+        energyValue.SetText(((int)(engine.availableEnergy)).ToString());
 
         engine.Tick(Time.deltaTime);
 

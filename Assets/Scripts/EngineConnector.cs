@@ -20,6 +20,12 @@ public class EngineConnector : MonoBehaviour
     public TMP_Text energyValue;
     public GameObject dangerZone;
 
+    public GameObject LocatorMushroom;
+    public GameObject SonarMushroom;
+    public GameObject VladaMushroom;
+    public GameObject SolarMushroom;
+    public GameObject WaterMushroom;
+
     public GameObject moleGO;
 
     private GameEngine engine;
@@ -29,6 +35,7 @@ public class EngineConnector : MonoBehaviour
     {
         engine = new GameEngine(20, 0);
         toxinPlacementMode = false;
+        RerenderMushrooms();
     }
 
     void Update()
@@ -41,6 +48,9 @@ public class EngineConnector : MonoBehaviour
         waterValue.SetText(((int)(engine.availableWater)).ToString());
         metalValue.SetText(((int)(engine.availableMetal)).ToString());
         energyValue.SetText(((int)(engine.availableEnergy)).ToString());
+
+        // render mushrooms
+        RerenderMushrooms();
 
         engine.Tick(Time.deltaTime);
 
@@ -135,7 +145,45 @@ public class EngineConnector : MonoBehaviour
             engine.ClickOn_LocatorMushOnOff();
         else
             engine.ClickOn_WaterMushroom();
+    }
+    private void RerenderMushrooms()
+    {
+        float alphaForNonActive = .5f;
+        if (engine.IsLocatorMushBought)
+        {
+            LocatorMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+        else
+        {
+            LocatorMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+        }
 
+        if (engine.IsSonarMushBought)
+        {
+            SonarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+        else
+        {
+            SonarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+        }
+
+        if (engine.IsSolarMushBought)
+        {
+            SolarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+        else
+        {
+            SolarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+        }
+
+        if (engine.IsWaterMushBought)
+        {
+            WaterMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+        else
+        {
+            WaterMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+        }
     }
     public void Click(InputAction.CallbackContext context)
     {

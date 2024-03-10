@@ -22,19 +22,19 @@ public class GameEngine
     public int energyOnOffLocatorPrice = 20;
 
     // Water mushroom
-    public int waterMushWaterPrice = 40;    
+    public int waterMushWaterPrice = 40;
     public int waterMushMetalPrice = 15;
     public bool IsWaterMushBought = false;
     public bool IsWaterMushEnergized = false;
 
     // Solar mushroom
-    public int solarMushWaterPrice = 40;    
+    public int solarMushWaterPrice = 40;
     public int solarMushMetalPrice = 30;
     public bool IsSolarMushBought = false;
     public bool IsSolarMushEnergized = false;
 
     // Locator mushroom
-    public int locatorMushWaterPrice = 10;    
+    public int locatorMushWaterPrice = 10;
     public int locatorMushMetalPrice = 25;
     public bool IsLocatorMushBought = false;
     public bool IsLocatorMushEnergized = false;
@@ -159,6 +159,7 @@ public class GameEngine
             Debug.LogError("no roots");
 
         map[y][x].HasRoots = false;
+        map[y][x].type = MapTileType.Empty;
 
         foreach (Vector2Int direction in directions)
         {

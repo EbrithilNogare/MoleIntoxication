@@ -20,27 +20,27 @@ public class GameEngine
     // Water mushroom
     public int waterMushMetalPrice = 0;
     public int waterMushWaterPrice = 0;
-    private bool IsWaterMushBought = false;
-    private bool IsWaterMushEnergized = false;
+    public bool IsWaterMushBought = false;
+    public bool IsWaterMushEnergized = false;
 
     // Solar mushroom
     public int solarMushMetalPrice = 0;
     public int solarMushWaterPrice = 0;
-    private bool IsSolarMushBought = false;
-    private bool IsSolarMushEnergized = false;
+    public bool IsSolarMushBought = false;
+    public bool IsSolarMushEnergized = false;
 
     // Locator mushroom
     public int locatorMushMetalPrice = 0;
     public int locatorMushWaterPrice = 0;
-    private bool IsLocatorMushBought = false;
-    private bool IsLocatorMushEnergized = false;
+    public bool IsLocatorMushBought = false;
+    public bool IsLocatorMushEnergized = false;
     private int visibilityStrength = 1; // 1, 2, 3
 
-    // Mole mushroom
-    public int moleMushMetalPrice = 0;
-    public int moleMushWaterPrice = 0;
-    private bool IsMoleMushBought = false;
-    private bool IsMoleMushEnergized = false;
+    // Sonar mushroom
+    public int sonarMushMetalPrice = 0;
+    public int sonarMushWaterPrice = 0;
+    public bool IsSonarMushBought = false;
+    public bool IsSonarMushEnergized = false;
 
     // Bomb
     public int bombMetalPrice = 0;
@@ -106,7 +106,7 @@ public class GameEngine
     public void ClickOn_Map(int x, int y)
     {
         if (availableWater >= rootPrice && !map[y][x].HasRoots && NearestRootDistance(x, y, 2) <= 1)
-        {            
+        {
             availableWater -= rootPrice;
             map[y][x].HasRoots = true;
 
@@ -295,10 +295,10 @@ public class GameEngine
     }
     public void ClickOn_MoleMushOnOff()
     {
-        if (IsMoleMushEnergized)
+        if (IsSonarMushEnergized)
         {
             // Off
-            IsMoleMushEnergized = !IsMoleMushEnergized;
+            IsSonarMushEnergized = !IsSonarMushEnergized;
             availableEnergy += energyOnOffMushPrice;
         }
         else
@@ -306,7 +306,7 @@ public class GameEngine
             //On
             if (availableEnergy >= 1)
             {
-                IsMoleMushEnergized = !IsMoleMushEnergized;
+                IsSonarMushEnergized = !IsSonarMushEnergized;
                 availableEnergy -= energyOnOffMushPrice;
             }
         }
@@ -342,13 +342,13 @@ public class GameEngine
             visibilityStrength = 2;
         }
     }
-    public void ClickOn_MoleMushroom()
+    public void ClickOn_SonarMushroom()
     {
-        if (availableWater >= moleMushWaterPrice && availableMetal >= moleMushMetalPrice)
+        if (availableWater >= sonarMushWaterPrice && availableMetal >= sonarMushMetalPrice)
         {
-            availableWater -= moleMushWaterPrice;
-            availableMetal -= moleMushMetalPrice;
-            IsMoleMushBought = true;
+            availableWater -= sonarMushWaterPrice;
+            availableMetal -= sonarMushMetalPrice;
+            IsSonarMushBought = true;
         }
     }
     public void UpdateResources(float timeDelta)

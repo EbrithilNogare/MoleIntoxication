@@ -23,10 +23,12 @@ public class EngineConnector : MonoBehaviour
     public GameObject moleGO;
 
     private GameEngine engine;
+    private bool toxinPlacementMode;
 
     void Start()
     {
         engine = new GameEngine(20, 0);
+        toxinPlacementMode = false;
     }
 
     void Update()
@@ -95,22 +97,44 @@ public class EngineConnector : MonoBehaviour
     }
     public void OnLocatorMushroomClick()
     {
-
+        if (engine.IsLocatorMushBought)
+            engine.ClickOn_LocatorMushOnOff();
+        // todo make it glow on / off - also all others
+        else
+            engine.ClickOn_LocatorMushroom();
     }
     public void OnSonarMushroomClick()
     {
-
+        if (engine.IsSonarMushBought)
+            engine.ClickOn_LocatorMushOnOff();
+        else
+            engine.ClickOn_SonarMushroom();
     }
     public void OnVladaMushroomClick()
     {
-
+        if (!toxinPlacementMode && true)
+        {
+            toxinPlacementMode = true;
+        }
+        else
+        {
+            toxinPlacementMode = false;
+        }
     }
     public void OnSolarMushroomClick()
     {
-
+        if (engine.IsSolarMushBought)
+            engine.ClickOn_LocatorMushOnOff();
+        else
+            engine.ClickOn_SolarMushroom();
     }
     public void OnWaterMushroomClick()
     {
+
+        if (engine.IsWaterMushBought)
+            engine.ClickOn_LocatorMushOnOff();
+        else
+            engine.ClickOn_WaterMushroom();
 
     }
     public void Click(InputAction.CallbackContext context)
@@ -144,6 +168,25 @@ public class EngineConnector : MonoBehaviour
                 engine.ClickOn_Map(x, y);
             else
                 engine.RemoveRoots(x, y);
+        }
+        else
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 100f, ~LayerMask.NameToLayer("Mushrooms"));
+
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("LocatorMushroom"))
+                    OnLocatorMushroomClick();
+                else if (hit.collider.CompareTag("SonarMushroom"))
+                    OnSonarMushroomClick();
+                else if (hit.collider.CompareTag("VladaMushroom"))
+                    OnVladaMushroomClick();
+                else if (hit.collider.CompareTag("SolarMushroom"))
+                    OnSolarMushroomClick();
+                else if (hit.collider.CompareTag("WaterMushroom"))
+                    OnWaterMushroomClick();
+            }
         }
     }
     public void Scroll(InputAction.CallbackContext context)

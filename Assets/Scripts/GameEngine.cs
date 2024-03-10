@@ -386,7 +386,11 @@ public class GameEngine
             availableEnergy -= timeDelta;
         else
         {
-            visibilityStrength = IsSonarMushBought ? 2 : 1;
+            if (visibilityStrength != (IsSonarMushBought ? 2 : 1))
+            {
+                visibilityStrength = IsSonarMushBought ? 2 : 1;
+                RecomputeVisibility();
+            }
             IsSonarMushEnergized = false;
         }
 

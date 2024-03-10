@@ -10,18 +10,20 @@ public class SFXManager : SmartSingleton<SFXManager>
     public AudioClip MushroomOff;
     public AudioClip MushroomPurchase;
     public AudioClip Roots;
+    public AudioClip ToxinPop;
 
-    public AudioSource AudioSource;
+    public AudioSource audioSource;
 
     private void Awake()
     {
-        AudioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Play(AudioClip clip)
     {
-        AudioSource.clip = clip;
-        AudioSource.Play();
+        //audioSource.clip = clip;
+        //audioSource.Play();
+        AudioSource.PlayClipAtPoint(clip,Camera.main.transform.position);
     }
 
     public void PlayButton()
@@ -52,5 +54,10 @@ public class SFXManager : SmartSingleton<SFXManager>
     public void PlayRoots()
     {
         Play(Roots);
+    }
+
+    public void PlayToxinPop()
+    {
+        Play(ToxinPop);
     }
 }

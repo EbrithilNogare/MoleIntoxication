@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,20 +13,24 @@ public class GameEngine
     public float availableWater;
     public float availableEnergy;
 
+    public float waterPercentage = 5f;
+    public float energyPercentage = 2f;
+    public float metalPercentage = 1f;
+
     public int rootPrice = 1;
 
     // All mushrooms(except of Vlada and solar one)
     public int energyOnOffMushPrice = 1;
 
     // Water mushroom
-    public int waterMushMetalPrice = 0;
-    public int waterMushWaterPrice = 0;
+    public int waterMushMetalPrice = 15;
+    public int waterMushWaterPrice = 30;
     public bool IsWaterMushBought = false;
     public bool IsWaterMushEnergized = false;
 
     // Solar mushroom
-    public int solarMushMetalPrice = 0;
-    public int solarMushWaterPrice = 0;
+    public int solarMushMetalPrice = 30;
+    public int solarMushWaterPrice = 30;
     public bool IsSolarMushBought = false;
     public bool IsSolarMushEnergized = false;
 
@@ -67,17 +72,17 @@ public class GameEngine
             for (int x = 0; x < Constants.MAP_WIDTH; x++)
             {
                 var randomPercentage = UnityEngine.Random.Range(0f, 100f);
-                if (randomPercentage < 10f)
+                if (randomPercentage < waterPercentage)
                 {
                     map[y][x].type = MapTileType.WaterSource;
                     map[y][x].capacityResources = 10;
                 }
-                else if (randomPercentage < 15f)
+                else if (randomPercentage < metalPercentage + waterPercentage)
                 {
                     map[y][x].type = MapTileType.MetalSource;
                     map[y][x].capacityResources = 10;
                 }
-                else if (randomPercentage < 20f)
+                else if (randomPercentage < energyPercentage + metalPercentage + waterPercentage)
                 {
                     map[y][x].type = MapTileType.EnergySource;
                     map[y][x].capacityResources = 10;
@@ -124,6 +129,9 @@ public class GameEngine
             if (map[y][x].HasRoots)
             {
                 map[y][x].type = MapTileType.Toxin;
+
+                map[y][x].currentResources = 3600f;
+                map[y][x].capacityResources = 3600f;
 
                 availableEnergy -= bombEnergyPrice;
                 availableMetal -= bombMetalPrice;
@@ -407,10 +415,10 @@ public class GameEngine
 
         // resolve resources
         if (IsSolarMushBought)
-            availableEnergy += timeDelta;
+            availableEnergy += timeDelta * 0.5f;
 
         if (IsWaterMushBought)
-            availableWater += timeDelta * (IsWaterMushEnergized ? 2 : 1);
+            availableWater += timeDelta * (IsWaterMushEnergized ? 1 : 0);
     }
 
     /// <summary>

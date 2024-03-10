@@ -119,7 +119,7 @@ public class Mole
                 {
                     Debug.Log("HEY VICTORY!");
                     //TODO end mole
-                    SceneManager.LoadScene("Win");
+                    SceneManager.LoadScene(4);
                 }
 
                 RunAway();

@@ -23,33 +23,33 @@ public class GameEngine
 
     // Water mushroom
     public int waterMushMetalPrice = 15;
-    public int waterMushWaterPrice = 30;
+    public int waterMushWaterPrice = 40;
     public bool IsWaterMushBought = false;
     public bool IsWaterMushEnergized = false;
 
     // Solar mushroom
     public int solarMushMetalPrice = 30;
-    public int solarMushWaterPrice = 30;
+    public int solarMushWaterPrice = 40;
     public bool IsSolarMushBought = false;
     public bool IsSolarMushEnergized = false;
 
     // Locator mushroom
-    public int locatorMushMetalPrice = 0;
-    public int locatorMushWaterPrice = 0;
+    public int locatorMushMetalPrice = 10;
+    public int locatorMushWaterPrice = 20;
     public bool IsLocatorMushBought = false;
     public bool IsLocatorMushEnergized = false;
     private int visibilityStrength = 1; // 1, 2, 3
 
     // Sonar mushroom
-    public int sonarMushMetalPrice = 0;
-    public int sonarMushWaterPrice = 0;
+    public int sonarMushMetalPrice = 10;
+    public int sonarMushWaterPrice = 20;
     public bool IsSonarMushBought = false;
     public bool IsSonarMushEnergized = false;
 
     // Bomb
-    public int bombMetalPrice = 0;
-    public int bombWaterPrice = 0;
-    public int bombEnergyPrice = 0;
+    public int bombMetalPrice = 20;
+    public int bombWaterPrice = 20;
+    public int bombEnergyPrice = 20;
 
     private int deepestOptimalization = 5;
 

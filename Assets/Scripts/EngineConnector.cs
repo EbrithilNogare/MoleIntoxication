@@ -26,6 +26,8 @@ public class EngineConnector : MonoBehaviour
     public GameObject SolarMushroom;
     public GameObject WaterMushroom;
 
+    public SpriteRenderer tileSelector;
+
     public GameObject moleGO;
 
     private GameEngine engine;
@@ -66,6 +68,7 @@ public class EngineConnector : MonoBehaviour
                     case MapTileType.WaterSource: resourceTile = tileWaterSource; break;
                     case MapTileType.EnergySource: resourceTile = tileEnergySource; break;
                     case MapTileType.MetalSource: resourceTile = tileMetalSource; break;
+                    case MapTileType.Toxin: resourceTile = tileToxin; break;
                 }
                 if (!engine.map[y][x].IsVisible)
                     rootTile = tileDarkness;
@@ -122,13 +125,19 @@ public class EngineConnector : MonoBehaviour
     }
     public void OnVladaMushroomClick()
     {
-        if (!toxinPlacementMode && true)
+        if (!toxinPlacementMode
+            && engine.bombEnergyPrice <= engine.availableEnergy
+            && engine.bombMetalPrice <= engine.availableMetal
+            && engine.bombWaterPrice <= engine.availableWater
+            )
         {
             toxinPlacementMode = true;
+            tileSelector.color = new Color(206 / 255f, 39 / 255f, 181 / 255f);
         }
         else
         {
             toxinPlacementMode = false;
+            tileSelector.color = Color.white;
         }
     }
     public void OnSolarMushroomClick()
@@ -214,11 +223,14 @@ public class EngineConnector : MonoBehaviour
         if (y >= 0 && x >= 0 && x < Constants.MAP_WIDTH)
         {
             // map hit
-            // TODO remove roots removing method
-            if (!engine.map[y][x].HasRoots)
-                engine.ClickOn_Map(x, y);
+            if (toxinPlacementMode)
+            {
+                engine.ClickOn_Bomb(x, y);
+                toxinPlacementMode = false;
+                tileSelector.color = Color.white;
+            }
             else
-                engine.RemoveRoots(x, y);
+                engine.ClickOn_Map(x, y);
         }
         else
         {

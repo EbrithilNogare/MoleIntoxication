@@ -14,6 +14,9 @@ public class GameEngine
 
     public int rootPrice = 1;
 
+    // All mushrooms(except of Vlada and solar one)
+    public int energyOnOffMushPrice = 1;
+
     // Water mushroom
     public int waterMushMetalPrice = 0;
     public int waterMushWaterPrice = 0;
@@ -103,8 +106,10 @@ public class GameEngine
     public void ClickOn_Map(int x, int y)
     {
         if (availableWater >= rootPrice && !map[y][x].HasRoots && NearestRootDistance(x, y, 2) <= 1)
-        {
+        {            
+            availableWater -= rootPrice;
             map[y][x].HasRoots = true;
+
             MakeNeighborsVisible(x, y);
             if (deepestOptimalization < y + 5)
                 deepestOptimalization = y + 5;
@@ -117,6 +122,10 @@ public class GameEngine
             if (map[y][x].HasRoots)
             {
                 map[y][x].type = MapTileType.Toxin;
+
+                availableEnergy -= bombEnergyPrice;
+                availableMetal -= bombMetalPrice;
+                availableWater -= bombWaterPrice;
             }
         }
     }
@@ -234,6 +243,7 @@ public class GameEngine
         {
             // Off
             IsSolarMushEnergized = !IsSolarMushEnergized;
+            availableEnergy += energyOnOffMushPrice;
         }
         else
         {
@@ -241,6 +251,7 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsSolarMushEnergized = !IsSolarMushEnergized;
+                availableEnergy -= energyOnOffMushPrice;
             }
         }
     }
@@ -250,6 +261,7 @@ public class GameEngine
         {
             // Off
             IsWaterMushEnergized = !IsWaterMushEnergized;
+            availableEnergy += energyOnOffMushPrice;
         }
         else
         {
@@ -257,6 +269,7 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsWaterMushEnergized = !IsWaterMushEnergized;
+                availableEnergy -= energyOnOffMushPrice;
             }
         }
     }
@@ -267,6 +280,7 @@ public class GameEngine
             // Off
             IsLocatorMushEnergized = !IsLocatorMushEnergized;
             visibilityStrength = 2;
+            availableEnergy += energyOnOffMushPrice;
         }
         else
         {
@@ -275,6 +289,7 @@ public class GameEngine
             {
                 IsLocatorMushEnergized = !IsLocatorMushEnergized;
                 visibilityStrength = 3;
+                availableEnergy -= energyOnOffMushPrice;
             }
         }
     }
@@ -284,6 +299,7 @@ public class GameEngine
         {
             // Off
             IsMoleMushEnergized = !IsMoleMushEnergized;
+            availableEnergy += energyOnOffMushPrice;
         }
         else
         {
@@ -291,6 +307,7 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsMoleMushEnergized = !IsMoleMushEnergized;
+                availableEnergy -= energyOnOffMushPrice;
             }
         }
     }
@@ -298,7 +315,9 @@ public class GameEngine
     {
         if (availableWater >= solarMushWaterPrice && availableMetal >= solarMushMetalPrice)
         {
-            // todo pay for it
+            availableWater -= solarMushWaterPrice;
+            availableMetal -= solarMushMetalPrice;
+
             IsSolarMushBought = true;
         }
     }
@@ -306,7 +325,9 @@ public class GameEngine
     {
         if (availableWater >= waterMushWaterPrice && availableMetal >= waterMushMetalPrice)
         {
-            // todo pay for it
+            availableWater -= waterMushWaterPrice;
+            availableMetal -= waterMushMetalPrice;
+
             IsWaterMushBought = true;
         }
     }
@@ -314,7 +335,9 @@ public class GameEngine
     {
         if (availableWater >= locatorMushWaterPrice && availableMetal >= locatorMushMetalPrice)
         {
-            // todo pay for it
+            availableWater -= locatorMushWaterPrice;
+            availableMetal -= locatorMushMetalPrice;
+
             IsLocatorMushBought = true;
             visibilityStrength = 2;
         }
@@ -323,7 +346,8 @@ public class GameEngine
     {
         if (availableWater >= moleMushWaterPrice && availableMetal >= moleMushMetalPrice)
         {
-            // todo pay for it
+            availableWater -= moleMushWaterPrice;
+            availableMetal -= moleMushMetalPrice;
             IsMoleMushBought = true;
         }
     }

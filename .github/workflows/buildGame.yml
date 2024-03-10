@@ -79,31 +79,3 @@ jobs:
         with:
           name: build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
-
-  deploy:
-    name: Butler Push to Itch
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          #- { platform: StandaloneOSX, itchChannel: "osx" } # Build a macOS standalone (Intel 64-bit)
-          #- { platform: StandaloneWindows, itchChannel: "win32" } # Build a Windows standalone
-          - { platform: StandaloneWindows64, itchChannel: "windows" } # Build a Windows 64-bit standalone
-          - { platform: StandaloneLinux64, itchChannel: "linux" } # Build a Linux 64-bit standalone
-          - { platform: Android, itchChannel: "android" } # Build an Android .apk standalone app
-          - { platform: WebGL, itchChannel: "html5" } # WebGL
-    needs: buildForAllSupportedPlatforms
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-${{ matrix.targetPlatform.platform }}
-          path: build/${{ matrix.targetPlatform.platform }}
-      - name: Push ${{ matrix.targetPlatform.platform }} to Itch.io
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_CREDENTIALS }}
-          CHANNEL: ${{ matrix.targetPlatform.itchChannel }}
-          ITCH_GAME: mole-intoxication # HERE change this
-          ITCH_USER: ebrithilnogare # HERE change this
-          PACKAGE: build/${{ matrix.targetPlatform.platform }}

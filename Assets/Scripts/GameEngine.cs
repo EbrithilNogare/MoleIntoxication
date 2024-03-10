@@ -31,7 +31,7 @@ public class GameEngine
     public int locatorMushWaterPrice = 0;
     private bool IsLocatorMushBought = false;
     private bool IsLocatorMushEnergized = false;
-    private int visibilityStrength = 3; // 1, 2, 3
+    private int visibilityStrength = 1; // 1, 2, 3
 
     // Mole mushroom
     public int moleMushMetalPrice = 0;
@@ -266,6 +266,7 @@ public class GameEngine
         {
             // Off
             IsLocatorMushEnergized = !IsLocatorMushEnergized;
+            visibilityStrength = 2;
         }
         else
         {
@@ -273,6 +274,7 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsLocatorMushEnergized = !IsLocatorMushEnergized;
+                visibilityStrength = 3;
             }
         }
     }
@@ -296,6 +298,7 @@ public class GameEngine
     {
         if (availableWater >= solarMushWaterPrice && availableMetal >= solarMushMetalPrice)
         {
+            // todo pay for it
             IsSolarMushBought = true;
         }
     }
@@ -303,6 +306,7 @@ public class GameEngine
     {
         if (availableWater >= waterMushWaterPrice && availableMetal >= waterMushMetalPrice)
         {
+            // todo pay for it
             IsWaterMushBought = true;
         }
     }
@@ -310,19 +314,22 @@ public class GameEngine
     {
         if (availableWater >= locatorMushWaterPrice && availableMetal >= locatorMushMetalPrice)
         {
+            // todo pay for it
             IsLocatorMushBought = true;
+            visibilityStrength = 2;
         }
     }
     public void ClickOn_MoleMushroom()
     {
         if (availableWater >= moleMushWaterPrice && availableMetal >= moleMushMetalPrice)
         {
+            // todo pay for it
             IsMoleMushBought = true;
         }
     }
     public void UpdateResources()
     {
-        for (int y = 0; y < 100; y++)
+        for (int y = 0; y < System.Math.Min(deepestOptimalization, map.Count); y++)
         {
             for (int x = 0; x < Constants.MAP_WIDTH; x++)
             {
@@ -357,7 +364,6 @@ public class GameEngine
         for (int x = centerX - 3; x <= centerX + 3; x++)
             for (int y = centerY - 3; y <= centerY + 3; y++)
             {
-                //Debug.Log("here");
                 if (x >= 0 && y >= 0 && x < map[0].Length && y < map.Count && Mathf.Abs(centerX - x) + Mathf.Abs(centerY - y) <= visibilityStrength)
                     map[y][x].IsVisible = true;
             }

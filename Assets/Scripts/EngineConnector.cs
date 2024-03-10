@@ -38,6 +38,7 @@ public class EngineConnector : MonoBehaviour
     private int ActualHealth = 100;
     private int moleTimeout = 50; // in actions
     private int moleHeight = 5;
+    private bool moleMove = false;
 
     void Start()
     {
@@ -77,7 +78,7 @@ public class EngineConnector : MonoBehaviour
                     if (engine.map[y][x].HasRoots)
                         moleHeight = y;
 
-            moleHeight = System.Math.Max(0, moleHeight + Random.Range(-5, 3));
+            moleHeight = System.Math.Max(0, moleHeight + Random.Range(-5, 0));
 
             PrepareMole();
         }
@@ -138,7 +139,8 @@ public class EngineConnector : MonoBehaviour
     [MyBox.ButtonMethod]
     public void TestMole()
     {
-        Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole, ActualHealth, (x) => ActualHealth = x);
+        moleMove = true;
+        Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole, ActualHealth, (x) => ActualHealth = x, () => moleMove = false); ;
         dangerZone.transform.position = new Vector3(-17.5f, 0, transform.position.z); ;
     }
     public void OnLocatorMushroomClick()
@@ -251,6 +253,9 @@ public class EngineConnector : MonoBehaviour
 
     public void ResolveClick(Vector2 position)
     {
+        if (moleMove)
+            return;
+
         float cameraSize = Camera.main.orthographicSize;
         Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, cameraSize));
         int x = (int)System.Math.Round(worldMousePosition.x) + (int)(Constants.MAP_WIDTH / 2);

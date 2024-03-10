@@ -48,10 +48,11 @@ public class Mole
     private (int, int) lastEatenRoot;
 
     private System.Action<int> healthUpdate;
+    private System.Action returnTurn;
 
     #endregion
 
-    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO, Transform healthBarT, int _health, System.Action<int> healthUpdate)
+    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO, Transform healthBarT, int _health, System.Action<int> healthUpdate, System.Action returnTurn)
     {
         //GenerateAttack(generatedAttackHeight);
         PlayerEndViewValue = generatedAttackHeight;
@@ -65,6 +66,7 @@ public class Mole
         IsToxicated = false;
         IsAttacking = true;
         this.healthUpdate = healthUpdate;
+        this.returnTurn = returnTurn;
     }
 
     // Start is called before the first frame update
@@ -165,7 +167,7 @@ public class Mole
             {
                 moleTransform.DOMoveX(-15f, 1f).OnComplete(() =>
                 {
-                    moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f);
+                    moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f).OnComplete(() => returnTurn());
                 });
 
             });
@@ -202,7 +204,7 @@ public class Mole
                     {
                         moleTransform.DOMoveX(-15f, 1f).OnComplete(() =>
                         {
-                            moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f);
+                            moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f).OnComplete(() => returnTurn());
                         });
 
                     });
@@ -284,7 +286,7 @@ public class Mole
             {
                 moleTransform.DOMoveX(-15f, 1f).OnComplete(() =>
                 {
-                    moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f);
+                    moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f).OnComplete(() => returnTurn());
                 });
 
             });

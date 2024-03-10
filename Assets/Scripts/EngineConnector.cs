@@ -116,7 +116,7 @@ public class EngineConnector : MonoBehaviour
     public void OnSonarMushroomClick()
     {
         if (engine.IsSonarMushBought)
-            engine.ClickOn_LocatorMushOnOff();
+            engine.ClickOn_SonarMushOnOff();
         else
             engine.ClickOn_SonarMushroom();
     }
@@ -134,7 +134,7 @@ public class EngineConnector : MonoBehaviour
     public void OnSolarMushroomClick()
     {
         if (engine.IsSolarMushBought)
-            engine.ClickOn_LocatorMushOnOff();
+            engine.ClickOn_SolarMushOnOff();
         else
             engine.ClickOn_SolarMushroom();
     }
@@ -142,47 +142,50 @@ public class EngineConnector : MonoBehaviour
     {
 
         if (engine.IsWaterMushBought)
-            engine.ClickOn_LocatorMushOnOff();
+            engine.ClickOn_WaterMushOnOff();
         else
             engine.ClickOn_WaterMushroom();
     }
     private void RerenderMushrooms()
     {
-        float alphaForNonActive = .5f;
+        Color notBuilt = new Color(1, 1, 1, .5f);
+        Color notActive = new Color(.5f, .5f, .5f, 1);
+        Color active = new Color(1, 1, 1, 1);
+
         if (engine.IsLocatorMushBought)
         {
-            LocatorMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            LocatorMushroom.GetComponent<SpriteRenderer>().color = engine.IsLocatorMushEnergized ? active : notActive;
         }
         else
         {
-            LocatorMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+            LocatorMushroom.GetComponent<SpriteRenderer>().color = notBuilt;
         }
 
         if (engine.IsSonarMushBought)
         {
-            SonarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            SonarMushroom.GetComponent<SpriteRenderer>().color = engine.IsSonarMushEnergized ? active : notActive;
         }
         else
         {
-            SonarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+            SonarMushroom.GetComponent<SpriteRenderer>().color = notBuilt;
         }
 
         if (engine.IsSolarMushBought)
         {
-            SolarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            SolarMushroom.GetComponent<SpriteRenderer>().color = active;
         }
         else
         {
-            SolarMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+            SolarMushroom.GetComponent<SpriteRenderer>().color = notBuilt;
         }
 
         if (engine.IsWaterMushBought)
         {
-            WaterMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            WaterMushroom.GetComponent<SpriteRenderer>().color = engine.IsWaterMushEnergized ? active : notActive;
         }
         else
         {
-            WaterMushroom.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alphaForNonActive);
+            WaterMushroom.GetComponent<SpriteRenderer>().color = notBuilt;
         }
     }
     public void Click(InputAction.CallbackContext context)

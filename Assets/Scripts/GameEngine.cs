@@ -240,21 +240,7 @@ public class GameEngine
     }
     public void ClickOn_SolarMushOnOff()
     {
-        if (IsSolarMushEnergized)
-        {
-            // Off
-            IsSolarMushEnergized = !IsSolarMushEnergized;
-            availableEnergy += energyOnOffMushPrice;
-        }
-        else
-        {
-            // On
-            if (availableEnergy >= 1)
-            {
-                IsSolarMushEnergized = !IsSolarMushEnergized;
-                availableEnergy -= energyOnOffMushPrice;
-            }
-        }
+
     }
     public void ClickOn_WaterMushOnOff()
     {

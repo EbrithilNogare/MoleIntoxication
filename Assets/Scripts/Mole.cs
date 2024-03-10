@@ -147,16 +147,38 @@ public class Mole
             TweenToEat();
 
         }
+        else
+        {
+            Debug.Log("Run home");
+            Vector2 direction2 = new Vector2(-15 - lastEatenRoot.Item1, lastEatenRoot.Item2);
+            float angleRadians2 = Mathf.Atan2(direction2.y, direction2.x);
+            float angleDegrees2 = angleRadians2 * Mathf.Rad2Deg;
+            moleTransform.DOLocalRotate(new Vector3(0, 0, angleDegrees2), 0.5f).OnComplete(() =>
+            {
+                moleTransform.DOMoveX(-15f, 1f).OnComplete(() =>
+                {
+                    moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f);
+                });
+
+            });
+        }
 
 
     }
 
     private void TweenToEat()
     {
+        Vector2 tmp = new Vector2(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2);
         GenerteEatenRoot(lastEatenRoot);
+        Vector2 direction = new Vector2((lastEatenRoot.Item1 - 7) - tmp.x, -(lastEatenRoot.Item2) - tmp.y);
+        float angleRadians = Mathf.Atan2(direction.y, direction.x);
+        float angleDegrees = angleRadians * Mathf.Rad2Deg;
         if (gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type != MapTileType.Toxin)
         {
-            Vector3 endAttackPosition = new Vector3(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2);
+            moleTransform.DOLocalRotate(new Vector3(0, 0, angleDegrees), 1f);
+
+            Vector3 endAttackPosition = new Vector3(lastEatenRoot.Item1 - 7, -lastEatenRoot.Item2, 0);
+
             moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
             {
                 gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
@@ -165,7 +187,17 @@ public class Mole
                 if (numOfToBeEatenRoots == 0)
                 {
                     Debug.Log("Run home");
-                    moleTransform.DOMoveX(-15f, 1f);
+                    Vector2 direction2 = new Vector2(-15 - lastEatenRoot.Item1, lastEatenRoot.Item2);
+                    float angleRadians2 = Mathf.Atan2(direction2.y, direction2.x);
+                    float angleDegrees2 = angleRadians2 * Mathf.Rad2Deg;
+                    moleTransform.DOLocalRotate(new Vector3(0, 0, angleDegrees2), 0.5f).OnComplete(() =>
+                    {
+                        moleTransform.DOMoveX(-15f, 1f).OnComplete(() =>
+                        {
+                            moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f);
+                        });
+
+                    });
 
                 }
                 else
@@ -224,9 +256,19 @@ public class Mole
 
     private void RunAway()
     {
+        Vector2 direction = new Vector2(-15 - lastEatenRoot.Item1, lastEatenRoot.Item2);
+        float angleRadians = Mathf.Atan2(direction.y, direction.x);
+        float angleDegrees = angleRadians * Mathf.Rad2Deg;
         moleTransform.DOShakePosition(1f, 0.05f, 10, 90f, false).OnComplete(() =>
         {
-            moleTransform.DOMove(attackingStartPosition, 0.5f);
+            moleTransform.DOLocalRotate(new Vector3(0, 0, angleDegrees), 0.5f).OnComplete(() =>
+            {
+                moleTransform.DOMoveX(-15f, 1f).OnComplete(() =>
+                {
+                    moleTransform.DOLocalRotate(new Vector3(0, 0, 0), 0f);
+                });
+
+            });
 
         });
     }

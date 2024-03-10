@@ -49,10 +49,11 @@ public class GameEngine
 
     private int deepestOptimalization = 5;
 
-    public GameEngine(int startWater, int startMetal)
+    public GameEngine(int startWater, int startMetal, int startEnergy)
     {
         this.availableMetal = startMetal;
         this.availableWater = startWater;
+        this.availableEnergy = startEnergy;
         this.directions = new List<Vector2Int> { new Vector2Int(0, 1), new Vector2Int(0, -1), new Vector2Int(1, 0), new Vector2Int(-1, 0) };
         GenerateMap();
     }
@@ -130,6 +131,7 @@ public class GameEngine
             }
         }
     }
+    // todo nefunguje !!!
     private int NearestRootDistance(int x, int y, int maxDepth = 5)
     {
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
@@ -159,8 +161,7 @@ public class GameEngine
                 Vector2Int next = current + direction;
 
                 if (next.x >= 0 && next.x < map[0].Length &&
-                    next.y >= 0 && next.y < map.Count &&
-                    !visited.Exists(item => item.y == next.y && item.x == next.x))
+                    next.y >= 0 && next.y < map.Count)
                 {
                     queue.Enqueue(next);
                 }

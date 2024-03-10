@@ -267,9 +267,6 @@ public class EngineConnector : MonoBehaviour
 
     public void ResolveClick(Vector2 position)
     {
-        if (moleMove)
-            return;
-
         float cameraSize = Camera.main.orthographicSize;
         Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, cameraSize));
         int x = (int)System.Math.Round(worldMousePosition.x) + (int)(Constants.MAP_WIDTH / 2);

@@ -113,6 +113,8 @@ public class Mole
                 IsBombed = false;
                 healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(false);
                 Health -= 20;
+                lastEatenRoot = (important_index, -(int)attackingStartPosition.y);
+                gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type = MapTileType.Empty;
                 healthUpdate(Health);
                 healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);
                 if (Health == 0)
@@ -218,6 +220,7 @@ public class Mole
         {
             healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(false);
             Health -= 20;
+            gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type = MapTileType.Empty;
             healthUpdate(Health);
             healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);
             if (Health == 0)

@@ -12,9 +12,9 @@ public class GameEngine
     public float availableWater;
     public float availableEnergy;
 
-    public float waterPercentage = 6f;
-    public float energyPercentage = 2f;
-    public float metalPercentage = 3f;
+    public float waterPercentage = 7f;
+    public float energyPercentage = 3f;
+    public float metalPercentage = 4f;
 
     public int rootPrice = 1;
 
@@ -22,20 +22,20 @@ public class GameEngine
     public int energyOnOffLocatorPrice = 20;
 
     // Water mushroom
+    public int waterMushWaterPrice = 40;    
     public int waterMushMetalPrice = 15;
-    public int waterMushWaterPrice = 40;
     public bool IsWaterMushBought = false;
     public bool IsWaterMushEnergized = false;
 
     // Solar mushroom
+    public int solarMushWaterPrice = 40;    
     public int solarMushMetalPrice = 30;
-    public int solarMushWaterPrice = 40;
     public bool IsSolarMushBought = false;
     public bool IsSolarMushEnergized = false;
 
     // Locator mushroom
-    public int locatorMushMetalPrice = 10;
-    public int locatorMushWaterPrice = 20;
+    public int locatorMushWaterPrice = 10;    
+    public int locatorMushMetalPrice = 25;
     public bool IsLocatorMushBought = false;
     public bool IsLocatorMushEnergized = false;
     private int visibilityStrength = 1; // 1, 2, 3
@@ -360,10 +360,10 @@ public class GameEngine
     public void UpdateMushroomCompanions(float timeDelta)
     {
         // resolve energy
-        //if (IsLocatorMushEnergized && availableEnergy >= 1)
-        //    availableEnergy -= timeDelta;
-        //else
-        //    IsLocatorMushEnergized = false;
+        if (IsLocatorMushEnergized && availableEnergy >= 1)
+            availableEnergy -= timeDelta;
+        else
+            IsLocatorMushEnergized = false;
 
         if (IsSonarMushEnergized && availableEnergy >= 1)
             availableEnergy -= timeDelta;

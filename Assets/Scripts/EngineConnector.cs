@@ -34,9 +34,11 @@ public class EngineConnector : MonoBehaviour
     private GameEngine engine;
     private bool toxinPlacementMode;
 
+    private int ActualHealth = 100;
+
     void Start()
     {
-        engine = new GameEngine(20, 0, 0);
+        engine = new GameEngine(500, 500, 500);
         toxinPlacementMode = false;
         RerenderMushrooms();
     }
@@ -101,13 +103,11 @@ public class EngineConnector : MonoBehaviour
         int precision = 10;
         float randomOffset = Random.Range(-precision / 2f, precision / 2f);
 
-        dangerZone.transform.position = new Vector3(0, -System.Math.Max(precision / 2f, moleHeight + randomOffset + 1), transform.position.z); ;
+        dangerZone.transform.position = new Vector3(-7.5f, -System.Math.Max(precision / 2f, moleHeight + randomOffset + 1), transform.position.z); ;
 
-        Vector3 scale = dangerZone.transform.localScale;
-        scale.y = precision + 2;
-        dangerZone.transform.localScale = scale;
+        dangerZone.GetComponent<SpriteRenderer>().size = new Vector2(.5f, precision + 2);
 
-        Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole);
+        Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole, ActualHealth, (x) => ActualHealth = x);
     }
     public void OnLocatorMushroomClick()
     {

@@ -32,7 +32,7 @@ public class Mole
     public int MaxNumbreOfRootsToBeEaten = 5;
     public int numOfToBeEatenRoots = 0;
 
-    public float Health = 100;
+    public int Health = 100;
 
     public float SizeOfTile = -0.5f;
 
@@ -47,21 +47,24 @@ public class Mole
 
     private (int, int) lastEatenRoot;
 
+    private System.Action<int> healthUpdate;
+
     #endregion
 
-    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO, Transform healthBarT)
+    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO, Transform healthBarT, int _health, System.Action<int> healthUpdate)
     {
         //GenerateAttack(generatedAttackHeight);
         PlayerEndViewValue = generatedAttackHeight;
         moleTransform = moleGO;
         healthBar = healthBarT;
+        Health = _health;
         MoveToAttackPosition();
         gameEnginInstance = engineInstance;
         findRoots = false;
         IsBombed = false;
         IsToxicated = false;
         IsAttacking = true;
-
+        this.healthUpdate = healthUpdate;
     }
 
     // Start is called before the first frame update
@@ -110,12 +113,13 @@ public class Mole
                 IsBombed = false;
                 healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(false);
                 Health -= 20;
+                healthUpdate(Health);
                 healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);
                 if (Health == 0)
                 {
                     Debug.Log("HEY VICTORY!");
                     //TODO end mole
-                    SceneManager.LoadScene("Win");
+                    SceneManager.LoadScene(4);
                 }
 
                 RunAway();

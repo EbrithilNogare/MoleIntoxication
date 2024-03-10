@@ -216,6 +216,16 @@ public class Mole
         }
         else
         {
+            healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(false);
+            Health -= 20;
+            healthUpdate(Health);
+            healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);
+            if (Health == 0)
+            {
+                Debug.Log("HEY VICTORY!");
+                //TODO end mole
+                SceneManager.LoadScene(4);
+            }
             RunAway();
             return;
         }

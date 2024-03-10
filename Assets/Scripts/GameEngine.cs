@@ -102,6 +102,7 @@ public class GameEngine
     public void Tick(float timeDelta)
     {
         UpdateResources(timeDelta);
+        UpdateMushroomCompanions(timeDelta);
     }
     public void ClickOn_Map(int x, int y)
     {
@@ -279,7 +280,6 @@ public class GameEngine
         {
             // Off
             IsLocatorMushEnergized = !IsLocatorMushEnergized;
-            visibilityStrength = 2;
             availableEnergy += energyOnOffMushPrice;
         }
         else
@@ -288,18 +288,19 @@ public class GameEngine
             if (availableEnergy >= 1)
             {
                 IsLocatorMushEnergized = !IsLocatorMushEnergized;
-                visibilityStrength = 3;
                 availableEnergy -= energyOnOffMushPrice;
             }
         }
     }
-    public void ClickOn_MoleMushOnOff()
+    public void ClickOn_SonarMushOnOff()
     {
         if (IsSonarMushEnergized)
         {
             // Off
             IsSonarMushEnergized = !IsSonarMushEnergized;
             availableEnergy += energyOnOffMushPrice;
+            visibilityStrength = 2;
+            RecomputeVisibility();
         }
         else
         {
@@ -308,6 +309,8 @@ public class GameEngine
             {
                 IsSonarMushEnergized = !IsSonarMushEnergized;
                 availableEnergy -= energyOnOffMushPrice;
+                visibilityStrength = 3;
+                RecomputeVisibility();
             }
         }
     }
@@ -337,9 +340,7 @@ public class GameEngine
         {
             availableWater -= locatorMushWaterPrice;
             availableMetal -= locatorMushMetalPrice;
-
             IsLocatorMushBought = true;
-            visibilityStrength = 2;
         }
     }
     public void ClickOn_SonarMushroom()
@@ -349,6 +350,8 @@ public class GameEngine
             availableWater -= sonarMushWaterPrice;
             availableMetal -= sonarMushMetalPrice;
             IsSonarMushBought = true;
+            visibilityStrength = 2;
+            RecomputeVisibility();
         }
     }
     public void UpdateResources(float timeDelta)
@@ -384,6 +387,34 @@ public class GameEngine
                 }
             }
         }
+    }
+    public void UpdateMushroomCompanions(float timeDelta)
+    {
+        // resolve energy
+        if (IsLocatorMushEnergized && availableEnergy >= 1)
+            availableEnergy -= timeDelta;
+        else
+            IsLocatorMushEnergized = false;
+
+        if (IsSonarMushEnergized && availableEnergy >= 1)
+            availableEnergy -= timeDelta;
+        else
+        {
+            visibilityStrength = IsSonarMushBought ? 2 : 1;
+            IsSonarMushEnergized = false;
+        }
+
+        if (IsWaterMushEnergized && availableEnergy >= 1)
+            availableEnergy -= timeDelta;
+        else
+            IsWaterMushEnergized = false;
+
+        // resolve resources
+        if (IsSolarMushBought)
+            availableEnergy += timeDelta;
+
+        if (IsWaterMushBought)
+            availableWater += timeDelta * (IsWaterMushEnergized ? 2 : 1);
     }
 
     /// <summary>

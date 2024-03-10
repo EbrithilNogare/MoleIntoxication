@@ -117,6 +117,8 @@ public class Mole
                 healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(false);
                 Health -= 20;
                 lastEatenRoot = (important_index, -(int)attackingStartPosition.y);
+                SFXManager.Instance.PlayToxinPop();
+
                 gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type = MapTileType.Empty;
                 healthUpdate(Health);
                 healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);
@@ -150,6 +152,7 @@ public class Mole
         numOfToBeEatenRoots = UnityEngine.Random.Range(MaxNumbreOfRootsToBeEaten / 2, MaxNumbreOfRootsToBeEaten);
         lastEatenRoot = (xPos, -(int)attackingStartPosition.y);
         gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
+        SFXManager.Instance.PlayMole();
         Debug.Log("MNAM:" + numOfToBeEatenRoots + "x ... AT" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
         //for (int i = 0; i < numOfToBeEatenRoots; i++)
         //{
@@ -193,6 +196,8 @@ public class Mole
             moleTransform.DOMove(endAttackPosition, 1f).OnComplete(() =>
             {
                 gameEnginInstance.RemoveRoots(lastEatenRoot.Item1, lastEatenRoot.Item2);
+                SFXManager.Instance.PlayMole();
+
                 Debug.Log("MNAM:" + lastEatenRoot.Item1 + "..." + lastEatenRoot.Item2);
                 numOfToBeEatenRoots--;
                 if (numOfToBeEatenRoots == 0)
@@ -223,6 +228,8 @@ public class Mole
         {
             healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(false);
             Health -= 20;
+            SFXManager.Instance.PlayToxinPop();
+
             gameEnginInstance.map[lastEatenRoot.Item2][lastEatenRoot.Item1].type = MapTileType.Empty;
             healthUpdate(Health);
             healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);

@@ -5,6 +5,7 @@ using DG.Tweening;
 using System;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 public class Mole
 {
@@ -46,16 +47,18 @@ public class Mole
 
     private GameEngine gameEnginInstance;
     private Transform moleTransform;
+    private Transform healthBar;
 
     private (int, int) lastEatenRoot;
 
     #endregion
 
-    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO)
+    public Mole(int generatedAttackHeight, GameEngine engineInstance, Transform moleGO, Transform healthBarT)
     {
         //GenerateAttack(generatedAttackHeight);
         PlayerEndViewValue = generatedAttackHeight;
         moleTransform = moleGO;
+        healthBar = healthBarT;
         MoveToAttackPosition();
         gameEnginInstance = engineInstance;
         findRoots = false;
@@ -109,9 +112,12 @@ public class Mole
             if (IsBombed)
             {
                 IsBombed = false;
-                Health -= 5;
+                healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(false);
+                Health -= 20;
+                healthBar.GetChild((int)Mathf.Abs((Health / 20) - 5)).gameObject.SetActive(true);
                 if (Health == 0)
                 {
+                    SceneManager.LoadScene("Win");
                     //TODO end mole
                     Debug.Log("HEY VICTORY!");
                 }

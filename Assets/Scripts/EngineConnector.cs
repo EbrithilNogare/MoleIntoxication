@@ -29,6 +29,7 @@ public class EngineConnector : MonoBehaviour
     public SpriteRenderer tileSelector;
 
     public GameObject moleGO;
+    public Transform healthBarMole;
 
     private GameEngine engine;
     private bool toxinPlacementMode;
@@ -106,7 +107,7 @@ public class EngineConnector : MonoBehaviour
         scale.y = precision + 2;
         dangerZone.transform.localScale = scale;
 
-        Mole m = new Mole(moleHeight, engine, moleGO.transform);
+        Mole m = new Mole(moleHeight, engine, moleGO.transform, healthBarMole);
     }
     public void OnLocatorMushroomClick()
     {

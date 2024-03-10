@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -140,44 +139,19 @@ public class GameEngine
         }
     }
     // todo nefunguje !!!
-    private int NearestRootDistance(int x, int y, int maxDepth = 5)
+    private int NearestRootDistance(int mainX, int mainY, int maxDepth = 5)
     {
-        Queue<Vector2Int> queue = new Queue<Vector2Int>();
-        List<Vector2Int> visited = new List<Vector2Int>();
+        int nearestRoot = 100;
 
-        queue.Enqueue(new Vector2Int(x, y));
-        visited.Add(new Vector2Int(x, y));
-
-        int[] maxDepthManhatan = { 1, 5, 13, 25, 41, 61 };
-
-        while (queue.Count > 0 && visited.Count <= maxDepthManhatan[maxDepth])
-        {
-            Vector2Int current = queue.Dequeue();
-
-            if (map[current.y][current.x].HasRoots)
-            {
-                return Mathf.Abs(current.x - x) + Mathf.Abs(current.y - y);
-            }
-
-            if (!visited.Exists(item => item.y == current.y && item.x == current.x))
-            {
-                continue;
-            }
-
-            foreach (Vector2Int direction in directions)
-            {
-                Vector2Int next = current + direction;
-
-                if (next.x >= 0 && next.x < map[0].Length &&
-                    next.y >= 0 && next.y < map.Count)
+        for (int x = System.Math.Max(0, mainX - maxDepth); x <= System.Math.Min(map[0].Length - 1, mainX + maxDepth); x++)
+            for (int y = System.Math.Max(0, mainY - maxDepth); y <= System.Math.Min(map.Count - 1, mainY + maxDepth); y++)
+                if (map[y][x].HasRoots)
                 {
-                    queue.Enqueue(next);
+                    int disttance = Mathf.Abs(mainX - x) + Mathf.Abs(mainY - y);
+                    if (disttance < nearestRoot)
+                        nearestRoot = disttance;
                 }
-            }
-            visited.Add(current);
-        }
-
-        return 100;
+        return nearestRoot;
     }
     public void RemoveRoots(int x, int y)
     {

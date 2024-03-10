@@ -18,6 +18,7 @@ public class EngineConnector : MonoBehaviour
     public TMP_Text waterValue;
     public TMP_Text metalValue;
     public TMP_Text energyValue;
+    public GameObject dangerZone;
 
     public GameObject moleGO;
 
@@ -80,7 +81,10 @@ public class EngineConnector : MonoBehaviour
     [MyBox.ButtonMethod]
     public void TestMole()
     {
-        Mole m = new Mole(4, engine, moleGO.transform);
+        int moreHeight = 4;
+        int precision = 10;
+        dangerZone.transform.position = new Vector3(0, 0, 0);
+        Mole m = new Mole(moreHeight, engine, moleGO.transform);
     }
 
     public void Click(InputAction.CallbackContext context)

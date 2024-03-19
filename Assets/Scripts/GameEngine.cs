@@ -109,7 +109,8 @@ public class GameEngine
         UpdateResources(timeDelta);
         UpdateMushroomCompanions(timeDelta);
     }
-    public void ClickOn_Map(int x, int y)
+    // returns if action succeeded
+    public bool ClickOn_Map(int x, int y)
     {
         if (availableWater >= rootPrice && !map[y][x].HasRoots && NearestRootDistance(x, y, 2) <= 1)
         {
@@ -119,7 +120,10 @@ public class GameEngine
             MakeNeighborsVisible(x, y);
             if (deepestOptimalization < y + 5)
                 deepestOptimalization = y + 5;
+
+            return true;
         }
+        return false;
     }
     public void ClickOn_Bomb(int x, int y)
     {

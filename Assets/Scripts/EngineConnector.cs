@@ -280,12 +280,11 @@ public class EngineConnector : MonoBehaviour
                 engine.ClickOn_Bomb(x, y);
                 toxinPlacementMode = false;
                 tileSelector.color = Color.white;
-                moleTimeout--;
             }
             else
             {
-                engine.ClickOn_Map(x, y);
-                moleTimeout--;
+                if (engine.ClickOn_Map(x, y))
+                    moleTimeout--;
             }
         }
         else

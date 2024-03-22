@@ -260,7 +260,7 @@ public class GameEngine
         else
         {
             //On
-            if (availableEnergy >= 1)
+            if (availableEnergy >= energyOnOffLocatorPrice)
             {
                 IsLocatorMushEnergized = !IsLocatorMushEnergized;
                 availableEnergy -= energyOnOffLocatorPrice;

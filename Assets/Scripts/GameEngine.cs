@@ -19,7 +19,7 @@ public class GameEngine
     public int rootPrice = 1;
 
     // All mushrooms(except of Vlada and solar one)
-    public int energyOnOffLocatorPrice = 20;
+    public int energyOnOffLocatorPrice = 1;
 
     // Water mushroom
     public int waterMushWaterPrice = 40;

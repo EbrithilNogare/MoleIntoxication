@@ -3,8 +3,8 @@
 
 [![](https://img.shields.io/github/package-json/v/EbrithilNogare/MoleIntoxication/gh-pages?label=version&style=for-the-badge&cacheSeconds=300)](https://github.com/EbrithilNogare/MoleIntoxication/tree/gh-pages/Build)
 
-[![](https://img.shields.io/github/size/EbrithilNogare/MoleIntoxication/Build/LucidityDungeon.wasm?branch=gh-pages&style=for-the-badge&label=Size%20of%20scripts&cacheSeconds=300)](https://github.com/EbrithilNogare/MoleIntoxication/tree/gh-pages/Build)
-[![](https://img.shields.io/github/size/EbrithilNogare/MoleIntoxication/Build/LucidityDungeon.data?branch=gh-pages&style=for-the-badge&label=Size%20of%20data&cacheSeconds=300)](https://github.com/EbrithilNogare/MoleIntoxication/tree/gh-pages/Build)
+[![](https://img.shields.io/github/size/EbrithilNogare/MoleIntoxication/Build/MoleIntoxication.wasm?branch=gh-pages&style=for-the-badge&label=Size%20of%20scripts&cacheSeconds=300)](https://github.com/EbrithilNogare/MoleIntoxication/tree/gh-pages/Build)
+[![](https://img.shields.io/github/size/EbrithilNogare/MoleIntoxication/Build/MoleIntoxication.data?branch=gh-pages&style=for-the-badge&label=Size%20of%20data&cacheSeconds=300)](https://github.com/EbrithilNogare/MoleIntoxication/tree/gh-pages/Build)
 
 ## Versions
 
